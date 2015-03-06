@@ -1,0 +1,186 @@
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+
+    <title>Buster for windows</title>
+    <meta name="description" content="">
+
+    <meta name="HandheldFriendly" content="True">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link rel="shortcut icon" href="/favicon.ico">
+
+    <link rel="stylesheet" type="text/css" href="/assets/css/screen.css?v=b41a1c329c">
+    <link rel="stylesheet" type="text/css" href="//fonts.googleapis.com/css?family=Merriweather:300,700,700italic,300italic%7COpen+Sans:700,400">
+
+    <link rel="canonical" href="http:///2015/03/06/b/">
+    
+    <meta property="og:site_name" content="Workbench">
+    <meta property="og:type" content="article">
+    <meta property="og:title" content="Buster for windows">
+    <meta property="og:description" content="This blog is powered by ghost, pretty rad tool. However to get it running on github pages, you need a static version of your site. That's where buster comes into play. It's a wrapper around wget, with few additional tasks...">
+    <meta property="og:url" content="http:///2015/03/06/b/">
+    <meta property="article:published_time" content="2015-03-06T19:32:36.356Z">
+    <meta property="article:modified_time" content="2015-03-06T19:32:36.354Z">
+    <meta property="article:tag" content="Python">
+    <meta property="article:tag" content="Blog">
+    
+    <meta name="twitter:card" content="summary">
+    <meta name="twitter:title" content="Buster for windows">
+    <meta name="twitter:description" content="This blog is powered by ghost, pretty rad tool. However to get it running on github pages, you need a static version of your site. That's where buster comes into play. It's a wrapper around wget, with few additional tasks...">
+    <meta name="twitter:url" content="http:///2015/03/06/b/">
+    
+    <script type="application/ld+json">
+{
+    "@context": "http://schema.org",
+    "@type": "Article",
+    "publisher": "Workbench",
+    "author": {
+        "@type": "Person",
+        "name": "Misiur",
+        "url": "http:///author/misiur",
+        "sameAs": null
+    },
+    "headline": "Buster for windows",
+    "url": "http:///2015/03/06/b/",
+    "datePublished": "2015-03-06T19:32:36.356Z",
+    "dateModified": "2015-03-06T19:32:36.354Z",
+    "keywords": "Python, Blog",
+    "description": "This blog is powered by ghost, pretty rad tool. However to get it running on github pages, you need a static version of your site. That&#x27;s where buster comes into play. It&#x27;s a wrapper around wget, with few additional tasks..."
+}
+    </script>
+
+    <meta name="generator" content="Ghost 0.5">
+    <link rel="alternate" type="application/rss+xml" title="Workbench" href="http:///rss/">
+</head>
+<body class="post-template tag-python tag-blog nav-closed">
+
+    <div class="nav">
+    <h3 class="nav-title">Menu</h3>
+    <a href="#" class="nav-close">
+        <span class="hidden">Close</span>
+    </a>
+    <ul>
+            <li class="nav-home" role="presentation"><a href="http:///">Home</a></li>
+    </ul>
+    <a class="subscribe-button icon-feed" href="/rss/">Subscribe</a>
+</div>
+<span class="nav-cover"></span>
+
+
+    <div class="site-wrapper">
+
+        
+
+
+<header class="main-header post-head no-cover">
+    <nav class="main-nav  clearfix">
+        
+            <a class="menu-button" href="#"><span class="burger">☰</span><span class="word">Menu</span></a>
+    </nav>
+</header>
+
+<main class="content" role="main">
+    <article class="post tag-python tag-blog">
+
+        <header class="post-header">
+            <h1 class="post-title">Buster for windows</h1>
+            <section class="post-meta">
+                <time class="post-date" datetime="2015-03-06">06 March 2015</time>  on <a href="/tag/python/">Python</a>, <a href="/tag/blog/">Blog</a>
+            </section>
+        </header>
+
+        <section class="post-content">
+            <p>This blog is powered by <a href="https://ghost.org">ghost</a>, pretty rad tool. However to get it running on github pages, you need a static version of your site. That's where <a href="https://github.com/axitkhurana/buster">buster</a> comes into play. It's a wrapper around wget, with few additional tasks for setting your website up.  </p>
+
+<h5 id="sowhatsthedeal">So what's the deal?</h5>
+
+<p>NTFS filesystems can't handle <code>?</code> in filenames. Nowadays assets are usually cached using query string (for example <code>asset/js/main.js?version=232314</code>). When scraping website with wget, if you stumble upon such file, and wget has flag <code>--restrict-file-name=unix</code> the file <strong>won't be downloaded at all</strong>. That's really annoying, because I thought it'd be simply encoded as <code>%3F</code>. I followed <a href="http://leftofnull.com/2014/02/24/using-github-pages-with-ghost-and-buster-on-windows-part-2/index.html">this tutorial</a>, however it seems wget for some reason applied rewrite to relative paths, even though it shouldn't with <code>restrict-file-name</code> flag (I'm using msys 1.0 wget version). So I made a little edit to latest buster version so rewrite won't happen at all, added safety measure agains duplicate file, and released it as a bundle. </p>
+
+<p><a href="https://github.com/Misiur/buster">Here you go</a>.</p>
+        </section>
+
+        <footer class="post-footer">
+
+
+
+            <section class="author">
+                <h4><a href="/author/misiur/">Misiur</a></h4>
+
+                    <p>Read <a href="/author/misiur/">more posts</a> by this author.</p>
+                <div class="author-meta">
+                    
+                    
+                </div>
+            </section>
+
+
+            <section class="share">
+                <h4>Share this post</h4>
+                <a class="icon-twitter" href="https://twitter.com/share?text=Buster%20for%20windows&amp;url=http:///2015/03/06/b/" onclick="window.open(this.href, 'twitter-share', 'width=550,height=235');return false;">
+                    <span class="hidden">Twitter</span>
+                </a>
+                <a class="icon-facebook" href="https://www.facebook.com/sharer/sharer.php?u=http:///2015/03/06/b/" onclick="window.open(this.href, 'facebook-share','width=580,height=296');return false;">
+                    <span class="hidden">Facebook</span>
+                </a>
+                <a class="icon-google-plus" href="https://plus.google.com/share?url=http:///2015/03/06/b/" onclick="window.open(this.href, 'google-plus-share', 'width=490,height=530');return false;">
+                    <span class="hidden">Google+</span>
+                </a>
+            </section>
+
+        </footer>
+        
+        <div id="disqus_thread"></div>
+        <script type="text/javascript">
+            /* * * CONFIGURATION VARIABLES * * */
+            var disqus_shortname = 'misiurworkbench';
+            var disqus_identifier = 'ghost-4';
+            
+            /* * * DON'T EDIT BELOW THIS LINE * * */
+            (function() {
+                var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+                dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+                (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+            })();
+        </script>
+        <noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript" rel="nofollow">comments powered by Disqus.</a></noscript>
+    </article>
+</main>
+
+
+
+        <footer class="site-footer clearfix">
+            <section class="copyright"><a href="http://">Workbench</a> © 2015</section>
+            <section class="poweredby">Proudly published with <a href="https://ghost.org">Ghost</a></section>
+        </footer>
+
+    </div>
+
+    <script src="/public/jquery.js?v=b41a1c329c"></script> <script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-12341674-2', 'auto');
+  ga('send', 'pageview');
+
+</script>
+
+    <script type="text/javascript" src="/assets/js/jquery.fitvids.js?v=b41a1c329c"></script>
+    <script type="text/javascript" src="/assets/js/index.js?v=b41a1c329c"></script>
+
+    <script type="text/javascript">
+        /* * * CONFIGURATION VARIABLES * * */
+        var disqus_shortname = 'misiurworkbench';
+        
+        /* * * DON'T EDIT BELOW THIS LINE * * */
+        (function () {
+            var s = document.createElement('script'); s.async = true;
+            s.type = 'text/javascript';
+            s.src = '//' + disqus_shortname + '.disqus.com/count.js';
+            (document.getElementsByTagName('HEAD')[0] || document.getElementsByTagName('BODY')[0]).appendChild(s);
+        }());
+    </script>
+</body>
