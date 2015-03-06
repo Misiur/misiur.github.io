@@ -22,7 +22,7 @@
     <meta property="og:description" content="This blog is powered by ghost, pretty rad tool. However to get it running on github pages, you need a static version of your site. That's where buster comes into play. It's a wrapper around wget, with few additional tasks...">
     <meta property="og:url" content="http:///2015/03/06/b/">
     <meta property="article:published_time" content="2015-03-06T19:32:36.356Z">
-    <meta property="article:modified_time" content="2015-03-06T19:33:18.034Z">
+    <meta property="article:modified_time" content="2015-03-06T19:49:48.192Z">
     <meta property="article:tag" content="Python">
     <meta property="article:tag" content="Blog">
     
@@ -45,7 +45,7 @@
     "headline": "Buster for Windows",
     "url": "http:///2015/03/06/b/",
     "datePublished": "2015-03-06T19:32:36.356Z",
-    "dateModified": "2015-03-06T19:33:18.034Z",
+    "dateModified": "2015-03-06T19:49:48.192Z",
     "keywords": "Python, Blog",
     "description": "This blog is powered by ghost, pretty rad tool. However to get it running on github pages, you need a static version of your site. That&#x27;s where buster comes into play. It&#x27;s a wrapper around wget, with few additional tasks..."
 }
@@ -96,7 +96,7 @@
 
 <h5 id="sowhatsthedeal">So what's the deal?</h5>
 
-<p>NTFS filesystems can't handle <code>?</code> in filenames. Nowadays assets are usually cached using query string (for example <code>asset/js/main.js?version=232314</code>). When scraping website with wget, if you stumble upon such file, and wget has flag <code>--restrict-file-name=unix</code> the file <strong>won't be downloaded at all</strong>. That's really annoying, because I thought it'd be simply encoded as <code>%3F</code>. I followed <a href="http://leftofnull.com/2014/02/24/using-github-pages-with-ghost-and-buster-on-windows-part-2/index.html">this tutorial</a>, however it seems wget for some reason applied rewrite to relative paths, even though it shouldn't with <code>restrict-file-name</code> flag (I'm using msys 1.0 wget version). So I made a little edit to latest buster version so rewrite won't happen at all, added safety measure agains duplicate file, and released it as a bundle. </p>
+<p>NTFS filesystems can't handle <code>?</code> in filenames. Nowadays assets are usually cached using query string (for example <code>asset/js/main.js?version=232314</code>). When scraping website with wget, if you stumble upon such file, and wget has flag <code>--restrict-file-name=unix</code> the file <strong>won't be downloaded at all</strong>. That's really annoying, because I thought it'd be simply encoded as <code>%3F</code>. I followed <a href="http://leftofnull.com/2014/02/24/using-github-pages-with-ghost-and-buster-on-windows-part-2/index.html">this tutorial</a>, however it seems wget for some reason applied rewrite to relative paths, even though it shouldn't with <code>restrict-file-name</code> flag (I'm using msys 1.0 wget version). So I made a little edit to latest buster version so rewrite won't happen at all, added safety measure against duplicate files, and released it as a bundle. </p>
 
 <p><a href="https://github.com/Misiur/buster">Here you go</a>.</p>
         </section>
