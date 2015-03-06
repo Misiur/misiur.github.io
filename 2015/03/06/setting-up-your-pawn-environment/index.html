@@ -1,0 +1,272 @@
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+
+    <title>Setting up your PAWN environment</title>
+    <meta name="description" content="">
+
+    <meta name="HandheldFriendly" content="True">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link rel="shortcut icon" href="/favicon.ico">
+
+    <link rel="stylesheet" type="text/css" href="/assets/css/screen.css?v=b41a1c329c">
+    <link rel="stylesheet" type="text/css" href="//fonts.googleapis.com/css?family=Merriweather:300,700,700italic,300italic%7COpen+Sans:700,400">
+
+    <link rel="canonical" href="http:///2015/03/06/setting-up-your-pawn-environment/">
+    
+    <meta property="og:site_name" content="Workbench">
+    <meta property="og:type" content="article">
+    <meta property="og:title" content="Setting up your PAWN environment">
+    <meta property="og:description" content="If you want to write cool gamemodes, your work environment should be as comfortable as possible. I'll share my standard setup, suitable for work with multiple separate projects. This guide is specific for windows, but if you are running linux...">
+    <meta property="og:url" content="http:///2015/03/06/setting-up-your-pawn-environment/">
+    <meta property="article:published_time" content="2015-03-06T18:38:40.481Z">
+    <meta property="article:modified_time" content="2015-03-06T18:38:40.476Z">
+    <meta property="article:tag" content="PAWN">
+    <meta property="article:tag" content="Sublime Text 3">
+    <meta property="article:tag" content="Tutorials">
+    
+    <meta name="twitter:card" content="summary">
+    <meta name="twitter:title" content="Setting up your PAWN environment">
+    <meta name="twitter:description" content="If you want to write cool gamemodes, your work environment should be as comfortable as possible. I'll share my standard setup, suitable for work with multiple separate projects. This guide is specific for windows, but if you are running linux...">
+    <meta name="twitter:url" content="http:///2015/03/06/setting-up-your-pawn-environment/">
+    
+    <script type="application/ld+json">
+{
+    "@context": "http://schema.org",
+    "@type": "Article",
+    "publisher": "Workbench",
+    "author": {
+        "@type": "Person",
+        "name": "Misiur",
+        "url": "http:///author/misiur",
+        "sameAs": null
+    },
+    "headline": "Setting up your PAWN environment",
+    "url": "http:///2015/03/06/setting-up-your-pawn-environment/",
+    "datePublished": "2015-03-06T18:38:40.481Z",
+    "dateModified": "2015-03-06T18:38:40.476Z",
+    "keywords": "PAWN, Sublime Text 3, Tutorials",
+    "description": "If you want to write cool gamemodes, your work environment should be as comfortable as possible. I&#x27;ll share my standard setup, suitable for work with multiple separate projects. This guide is specific for windows, but if you are running linux..."
+}
+    </script>
+
+    <meta name="generator" content="Ghost 0.5">
+    <link rel="alternate" type="application/rss+xml" title="Workbench" href="http:///rss/">
+</head>
+<body class="post-template tag-pawn tag-sublime-text-3 tag-tutorials nav-closed">
+
+    <div class="nav">
+    <h3 class="nav-title">Menu</h3>
+    <a href="#" class="nav-close">
+        <span class="hidden">Close</span>
+    </a>
+    <ul>
+            <li class="nav-home" role="presentation"><a href="http:///">Home</a></li>
+    </ul>
+    <a class="subscribe-button icon-feed" href="/rss/">Subscribe</a>
+</div>
+<span class="nav-cover"></span>
+
+
+    <div class="site-wrapper">
+
+        
+
+
+<header class="main-header post-head no-cover">
+    <nav class="main-nav  clearfix">
+        
+            <a class="menu-button" href="#"><span class="burger">☰</span><span class="word">Menu</span></a>
+    </nav>
+</header>
+
+<main class="content" role="main">
+    <article class="post tag-pawn tag-sublime-text-3 tag-tutorials">
+
+        <header class="post-header">
+            <h1 class="post-title">Setting up your PAWN environment</h1>
+            <section class="post-meta">
+                <time class="post-date" datetime="2015-03-06">06 March 2015</time>  on <a href="/tag/pawn/">PAWN</a>, <a href="/tag/sublime-text-3/">Sublime Text 3</a>, <a href="/tag/tutorials/">Tutorials</a>
+            </section>
+        </header>
+
+        <section class="post-content">
+            <p>If you want to write cool gamemodes, your work environment should be as comfortable as possible. I'll share my standard setup, suitable for work with multiple separate projects. This guide is specific for <strong>windows</strong>, but if you are running linux distro as your main OS, I guess you can handle that yourself.</p>
+
+<h3 id="listofcontents">List of contents</h3>
+
+<ol>
+<li>Toolkit  </li>
+<li>Folder layout  </li>
+<li>Dependencies  </li>
+<li>Editor  </li>
+<li>Starting a new project</li>
+</ol>
+
+<h3 id="toolkit">Toolkit</h3>
+
+<ol>
+<li><a href="http://schinagl.priv.at/nt/hardlinkshellext/linkshellextension.html#download">Link shell extension</a> - unfortunately windows doesn't support symlinks as nicely as unix, and vagrant/docker is overkill for our purposes. We'll share most libraries across projects, and we won't have to worry about updating pawn libraries one by one.  </li>
+<li><a href="http://www.sublimetext.com/3">Sublime text 3</a> - we'll go in-depth about that one later. It's free, but will nag you every now and then about buying it.  </li>
+<li><a href="http://git-scm.com/downloads">Git for windows</a> - windows latest version is 1.9.5, 2 isn't ported yet as it requires a lot of hacks around POSIX libraries. Maybe one day...  </li>
+<li><em>(optional)</em> <a href="https://www.virtualbox.org/">Virtualbox</a> + <a href="http://isoredirect.centos.org/centos/7/isos/x86_64/">CentOS x32</a> - most servers are working on CentOS, so we have to make sure that our server won't crash for some random reason. This one is optional though, you can go rough.</li>
+</ol>
+
+<p>Once you gather all required elements, let's start...</p>
+
+<h3 id="folderlayout">Folder layout</h3>
+
+<p>Being organised is a very important trait to have if you want to be a good developer. This is the most basic setup you can get.</p>
+
+<pre><code>- Your root workbench folder
+-- Template
+-- Resources
+-- Example project
+</code></pre>
+
+<p><code>Resources</code> folder will serve as a hub for keeping all PAWN libraries, and samp related things. <code>Template</code> will serve as a base for each new project. </p>
+
+<h3 id="dependencies">Dependencies</h3>
+
+<p>First, fetch yourself <a href="http://sa-mp.com/download.php">samp server for windows</a>. Save and extract it into your <code>Resources</code> folder. After doing that, select <code>samp-server.exe</code>, <code>samp-npc.exe</code>, <code>announce.exe</code> and <code>server.cfg</code>, then right-click and select "Use as link source". Enter your <code>Template</code> folder, right-click then select <code>Create link =&gt; Clone hard link</code>. Voila, now anytime you update your samp-server in <code>Resources</code>, the one in <code>Template</code> will be uploaded as well. </p>
+
+<p>We need some directory initial directory structure. In <code>Template</code> create <code>pawno</code> folder with <code>include</code> subfolder. Also create standard folders:  <code>gamemodes</code>, <code>filterscripts</code>, <code>scriptfiles</code>, and <code>plugins</code>.</p>
+
+<p>Go back to your server folder, enter <code>pawno/include</code>, select <strong>all</strong> files, and use them as a link source as we did with <code>samp-server.exe</code>. Then go into <code>Template/pawno/include</code> and create hard link of all includes here.</p>
+
+<p>We <em>could</em> use standard compiler, but we won't as it has a whole bunch of known problems. <a href="https://github.com/Zeex/pawn/releases">Download latest pawncc release for windows</a> (don't download pawndisasm, as we don't need it). Select all files in the folder as a link source, and hard link them in your <code>Template/pawno</code>.</p>
+
+<p>Your compiler is ready for work!</p>
+
+<h3 id="editor">Editor</h3>
+
+<p>You've probably already met PAWNO, the editor bundled with samp server. For beginners it's sufficient tool, but if you want to step up your game - you have to step up your editor as well. Introducing - <strong>sublime text 3</strong>. It's lightning fast, has great community base, and is my go-to multitool. This is not an editor course, but I can highly recommend <a href="http://code.tutsplus.com/articles/perfect-workflow-in-sublime-text-free-course--net-27293">this tutsplus.com article</a>. It made me realise how much my previous editor sucked (in fact I used two, heavy IDE for webdevelopment, notepad++ for everything else). Of course, sublime is my personal preference, there are hundreds of awesome tools available - <a href="https://atom.io/"><strong>Atom</strong> for example</a>.</p>
+
+<p>You already should've installed it. We need to set it up for our PAWN development. <a href="https://github.com/Southclaw/pawn-sublime-language">Download this Southclaw pawn package</a>. In sublime menu select <code>Preferences =&gt; Browse packages</code>. Open <code>User</code> folder, and paste there the package (preferable in a folder, so you won't be confused with what is what).</p>
+
+<p>Now download <a href="https://github.com/Misiur/sublime-pawn-build/releases">my default build system</a>, and paste it into your <code>User</code> folder as well.</p>
+
+<p>Well done, now your environment is awesome!</p>
+
+<h2 id="startinganewproject">Starting a new project</h2>
+
+<p>Finally! All that setup will be reusable for each new project. How to start a new one?</p>
+
+<ol>
+<li><code>git bash</code> should be available in your start menu, fire it up.  </li>
+<li>Navigate to your root folder (for me it would be <code>cd /d/Workbench</code>), and type: <code>git init &lt;name of your project&gt;</code> - keep the name short, as it will be the name of the project folder, for example <code>git init Foobar</code>. Don't close the console.  </li>
+<li>Copy all contents of <code>Template</code> folder, and paste them into project folder. If you're wondering why we won't use hard links here, it's because sometimes updates will result in <a href="http://en.wikipedia.org/wiki/Backward_compatibility">BC break</a>. If you want bleeding-edge updates, hard link is the way to go, except <code>server.cfg</code> file.  </li>
+<li>In sublime text open new window. Select <code>Project -&gt; Save project as...</code>, and save it in your new project folder. Then click <code>Project -&gt; Add Folder to project</code> and select your project folder again. Now you should have all files in left-side menu.  </li>
+<li><p>Again in sublime, right-click top level folder, and select <code>New file</code>. Immediately save is as <code>.gitignore</code>. It's contents should be as follows:</p>
+
+<pre><code>*
+!.gitignore
+!filterscripts/**/*
+filterscripts/*.amx
+!gamemodes/**/*.inc
+gamemodes/*.amx
+</code></pre></li>
+<li><strong>Create main pwn file</strong>. Assuming your project name is <code>HWRP</code>, create a file named <code>gamemodes/HWRP.pwn</code> which will be your main pwn file.  </li>
+<li><p>Dump some initial content into it: <br>
+    #include <a_samp></a_samp></p>
+
+<pre><code>main() {
+    print("It seems everything works!");
+}
+</code></pre></li>
+<li>Press <code>f5</code> - if you've done everything correctly, your amx should be ready!  </li>
+<li>I hope you didn't close your git bash, because it's gonna be important now. Navigate into your project's main folder, and execute <code>git add .gitignore gamemodes/&lt;project name&gt;.pwn</code>, then <code>git commit -m "It seems I made a gamemode"</code>. Voila, you now entered the big league of tracking changes in your files. I'll explain what git does some other time.</li>
+</ol>
+
+<h3 id="conclusion">Conclusion</h3>
+
+<p>That was a long process, but now your projects are not few scattered around HDD files, but properly managed, revisioned and structured files. If you stick around with my blog, you'll learn both PAWN and sublime text tricks, YSI library usage, and maybe we'll write some simple gamemode.</p>
+
+<p>Thanks for reading!</p>
+        </section>
+
+        <footer class="post-footer">
+
+
+
+            <section class="author">
+                <h4><a href="/author/misiur/">Misiur</a></h4>
+
+                    <p>Read <a href="/author/misiur/">more posts</a> by this author.</p>
+                <div class="author-meta">
+                    
+                    
+                </div>
+            </section>
+
+
+            <section class="share">
+                <h4>Share this post</h4>
+                <a class="icon-twitter" href="https://twitter.com/share?text=Setting%20up%20your%20PAWN%20environment&amp;url=http:///2015/03/06/setting-up-your-pawn-environment/" onclick="window.open(this.href, 'twitter-share', 'width=550,height=235');return false;">
+                    <span class="hidden">Twitter</span>
+                </a>
+                <a class="icon-facebook" href="https://www.facebook.com/sharer/sharer.php?u=http:///2015/03/06/setting-up-your-pawn-environment/" onclick="window.open(this.href, 'facebook-share','width=580,height=296');return false;">
+                    <span class="hidden">Facebook</span>
+                </a>
+                <a class="icon-google-plus" href="https://plus.google.com/share?url=http:///2015/03/06/setting-up-your-pawn-environment/" onclick="window.open(this.href, 'google-plus-share', 'width=490,height=530');return false;">
+                    <span class="hidden">Google+</span>
+                </a>
+            </section>
+
+        </footer>
+        
+        <div id="disqus_thread"></div>
+        <script type="text/javascript">
+            /* * * CONFIGURATION VARIABLES * * */
+            var disqus_shortname = 'misiurworkbench';
+            var disqus_identifier = 'ghost-3';
+            
+            /* * * DON'T EDIT BELOW THIS LINE * * */
+            (function() {
+                var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+                dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+                (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+            })();
+        </script>
+        <noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript" rel="nofollow">comments powered by Disqus.</a></noscript>
+    </article>
+</main>
+
+
+
+        <footer class="site-footer clearfix">
+            <section class="copyright"><a href="http://">Workbench</a> © 2015</section>
+            <section class="poweredby">Proudly published with <a href="https://ghost.org">Ghost</a></section>
+        </footer>
+
+    </div>
+
+    <script src="/public/jquery.js?v=b41a1c329c"></script> <script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-12341674-2', 'auto');
+  ga('send', 'pageview');
+
+</script>
+
+    <script type="text/javascript" src="/assets/js/jquery.fitvids.js?v=b41a1c329c"></script>
+    <script type="text/javascript" src="/assets/js/index.js?v=b41a1c329c"></script>
+
+    <script type="text/javascript">
+        /* * * CONFIGURATION VARIABLES * * */
+        var disqus_shortname = 'misiurworkbench';
+        
+        /* * * DON'T EDIT BELOW THIS LINE * * */
+        (function () {
+            var s = document.createElement('script'); s.async = true;
+            s.type = 'text/javascript';
+            s.src = '//' + disqus_shortname + '.disqus.com/count.js';
+            (document.getElementsByTagName('HEAD')[0] || document.getElementsByTagName('BODY')[0]).appendChild(s);
+        }());
+    </script>
+</body>
