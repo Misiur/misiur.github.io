@@ -1,4 +1,4 @@
-<channel><title></title><description></description><link>http:///<generator>Ghost 0.5</generator><lastbuilddate>Fri, 06 Mar 2015 18:39:40 GMT</lastbuilddate><link href="http:///rss/" rel="self" type="application/rss+xml"><ttl>60</ttl><item><title></title><description>If you want to write cool gamemodes, your work environment should be as comfortable as possible. I'll share my standard setup, suitable for work with multiple separate projects. This guide is specific for <strong>windows</strong>, but if you are running linux distro as your main OS, I guess you can handle that yourself.
+<channel><title></title><description></description><link>http:///<generator>Ghost 0.5</generator><lastbuilddate>Fri, 06 Mar 2015 18:56:26 GMT</lastbuilddate><link href="http:///rss/" rel="self" type="application/rss+xml"><ttl>60</ttl><item><title></title><description>If you want to write cool gamemodes, your work environment should be as comfortable as possible. I'll share my standard setup, suitable for work with multiple separate projects. This guide is specific for <strong>windows</strong>, but if you are running linux distro as your main OS, I guess you can handle that yourself.
 
 <h3 id="listofcontents">List of contents</h3>
 
@@ -74,10 +74,10 @@ filterscripts/*.amx
 gamemodes/*.amx
 </code></pre></li>
 <li><strong>Create main pwn file</strong>. Assuming your project name is <code>HWRP</code>, create a file named <code>gamemodes/HWRP.pwn</code> which will be your main pwn file.  </li>
-<li><p>Dump some initial content into it: <br>
-    #include <a_samp></a_samp></p>
+<li><p>Dump some initial content into it:</p>
 
-<pre><code>main() {
+<pre><code>#include &lt;a_samp&gt;
+main() {
     print("It seems everything works!");
 }
 </code></pre></li>
