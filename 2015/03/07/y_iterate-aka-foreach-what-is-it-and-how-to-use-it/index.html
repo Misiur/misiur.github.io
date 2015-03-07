@@ -1,0 +1,345 @@
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+
+    <title>y_iterate aka foreach - what is it, and how to use it</title>
+    <meta name="description" content="">
+
+    <meta name="HandheldFriendly" content="True">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link rel="shortcut icon" href="/favicon.ico">
+
+    <link rel="stylesheet" type="text/css" href="/assets/css/screen.css?v=30e29fb91c">
+    <link rel="stylesheet" type="text/css" href="//fonts.googleapis.com/css?family=Merriweather:300,700,700italic,300italic%7COpen+Sans:700,400">
+
+    <link rel="canonical" href="http://misiur.github.io/2015/03/07/y_iterate-aka-foreach-what-is-it-and-how-to-use-it/">
+    
+    <meta property="og:site_name" content="Workbench">
+    <meta property="og:type" content="article">
+    <meta property="og:title" content="y_iterate aka foreach - what is it, and how to use it">
+    <meta property="og:description" content="As I mentioned previously, we'll start our journey with YSI at y_iterate. Before I even joined sa-mp forums, I knew of foreach. It's trivial in use, but only handful of people know how it works, and even less use...">
+    <meta property="og:url" content="http://misiur.github.io/2015/03/07/y_iterate-aka-foreach-what-is-it-and-how-to-use-it/">
+    <meta property="article:published_time" content="2015-03-07T20:59:18.607Z">
+    <meta property="article:modified_time" content="2015-03-07T20:59:56.261Z">
+    <meta property="article:tag" content="PAWN">
+    <meta property="article:tag" content="Sublime Text 3">
+    
+    <meta name="twitter:card" content="summary">
+    <meta name="twitter:title" content="y_iterate aka foreach - what is it, and how to use it">
+    <meta name="twitter:description" content="As I mentioned previously, we'll start our journey with YSI at y_iterate. Before I even joined sa-mp forums, I knew of foreach. It's trivial in use, but only handful of people know how it works, and even less use...">
+    <meta name="twitter:url" content="http://misiur.github.io/2015/03/07/y_iterate-aka-foreach-what-is-it-and-how-to-use-it/">
+    
+    <script type="application/ld+json">
+{
+    "@context": "http://schema.org",
+    "@type": "Article",
+    "publisher": "Workbench",
+    "author": {
+        "@type": "Person",
+        "name": "Misiur",
+        "url": "http://misiur.github.io/author/misiur",
+        "sameAs": null
+    },
+    "headline": "y_iterate aka foreach - what is it, and how to use it",
+    "url": "http://misiur.github.io/2015/03/07/y_iterate-aka-foreach-what-is-it-and-how-to-use-it/",
+    "datePublished": "2015-03-07T20:59:18.607Z",
+    "dateModified": "2015-03-07T20:59:56.261Z",
+    "keywords": "PAWN, Sublime Text 3",
+    "description": "As I mentioned previously, we&#x27;ll start our journey with YSI at y_iterate. Before I even joined sa-mp forums, I knew of foreach. It&#x27;s trivial in use, but only handful of people know how it works, and even less use..."
+}
+    </script>
+
+    <meta name="generator" content="Ghost 0.5">
+    <link rel="alternate" type="application/rss+xml" title="Workbench" href="http://misiur.github.io/rss/">
+</head>
+<body class="post-template tag-pawn tag-sublime-text-3 nav-closed">
+
+    <div class="nav">
+    <h3 class="nav-title">Menu</h3>
+    <a href="#" class="nav-close">
+        <span class="hidden">Close</span>
+    </a>
+    <ul>
+            <li class="nav-home" role="presentation"><a href="http://misiur.github.io/">Home</a></li>
+    </ul>
+    <a class="subscribe-button icon-feed" href="/rss/index.rss">Subscribe</a>
+</div>
+<span class="nav-cover"></span>
+
+
+    <div class="site-wrapper">
+
+        
+
+
+<header class="main-header post-head no-cover">
+    <nav class="main-nav  clearfix">
+        
+            <a class="menu-button" href="#"><span class="burger">☰</span><span class="word">Menu</span></a>
+    </nav>
+</header>
+
+<main class="content" role="main">
+    <article class="post tag-pawn tag-sublime-text-3">
+        <header class="post-header">
+            <h1 class="post-title">y_iterate aka foreach - what is it, and how to use it</h1>
+            <section class="post-meta">
+                <time class="post-date" datetime="2015-03-07">07 March 2015</time>  on <a href="/tag/pawn/">PAWN</a>, <a href="/tag/sublime-text-3/">Sublime Text 3</a>
+            </section>
+        </header>
+        
+        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+        <!-- Main ad -->
+        <ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-7854008089817957" data-ad-slot="3303976623" data-ad-format="auto"></ins>
+        <script>
+        (adsbygoogle = window.adsbygoogle || []).push({});
+        </script>
+        
+        <section class="post-content">
+            <p>As I mentioned previously, we'll start our journey with YSI at y_iterate. Before I even joined sa-mp forums, I knew of foreach. It's trivial in use, but only handful of people know how it works, and even less use other iterators than <code>Players</code>. <a href="http://forum.sa-mp.com/showthread.php?t=92679">Y_Less had already written quite detailed description of this include, refer to it for API.</a></p>
+
+<h5 id="whyforeachisfasterthanstandardplayerloop">Why foreach is faster than standard player loop?</h5>
+
+<p>Normally you would have to loop <code>MAX_PLAYERS</code> times, then use <code>IsPlayerConnected</code> to determine whether player is on server. Then come additional checks, like whether player is registered, logged in, etc. YSI has a solution for that, <code>y_groups</code>, which I will cover in upcoming tutorial. Anyway, what y_iterate does, is simply to hook to <code>OnPlayerConnect</code> callback, then add player to <code>Players</code> iterator, and then remove player from it on <code>OnPlayerDisconnect</code> (you can adjust settings for bots using defines before including y_iterate).  </p>
+
+<h5 id="butarraysinpawnarestatichowonearthwouldyouknowwhentostoplooping">But arrays in PAWN are static, how on earth would you know when to stop looping?</h5>
+
+<p>Remember that <code>Players</code> is an iterator. You can write one yourself, so let's do just that:</p>
+
+<pre><code>#include &lt;YSI\y_iterate&gt;
+//(...)
+new
+    Iterator:Foobar&lt;10&gt;
+;
+</code></pre>
+
+<p>Pawn compiler has three stages: preprocessing - substituting all <code>#define</code> in code, then first compiler pass, then second one. Y_iterate magic happens during preprocessor pass. If you want to see what happens then, <a href="https://gist.github.com/Misiur/1ab20c95fb8dfe9007a1">download modified <code>PAWN.sublime-build</code></a>. Now press <code>ctrl+shift+p</code>, type <code>build list</code>, and select <code>Build: List file</code>. In your gamemodes there should appear new file <code>&lt;project name&gt;.lst</code>. Open it. Scroll all the way down. Now you should see something like</p>
+
+<pre><code>new
+    _Y_ITER_C9:Foobar@YSII_Cg,Foobar@YSII_Ag[(10)+1]={(10)*2,(10)*2-1,...}
+;
+</code></pre>
+
+<p>What the hell does it mean? Let's make it a little bit more human-readable:</p>
+
+<pre><code>new
+    _Y_ITER_C9:Foobar@YSII_Cg,
+    Foobar@YSII_Ag[(10)+1]={(10)*2,(10)*2-1,...}
+;
+</code></pre>
+
+<p><code>_Y_ITER_C9</code> Is <a href="http://wiki.sa-mp.com/wiki/Scripting_Basics#Tags">a tag</a>, don't worry about that. <code>Foobar@YSII_Cg</code> is a variable keeping count of how much items we have in our <code>Foobar@YSII_Ag</code> iterator. That's it, we don't need to know more. </p>
+
+<h5 id="coolwealreadyknewthatfromoriginaltutorialwhatnow">Cool, we already knew that from original tutorial. What now?</h5>
+
+<p>I think the reason why people don't use y_iterate, is because they don't know where to use it. We'll do a real life example - loading data from database. Let's say houses. I'll use <a href="http://forum.sa-mp.com/showthread.php?t=56564">blueg mysql plugin</a>, but don't panic, I'll create a tutorial for that in time. In my database I have 3 houses, however this is just an example, so all they contain is the house name. <a href="https://github.com/Misiur/pawn-turorial/tree/bf41a9f860bdb7c9399f5586adf81d7d2b70d602">Github repository for this example</a>.</p>
+
+<pre><code>#include &lt;a_samp&gt;
+#include &lt;a_mysql&gt;
+#include &lt;YSI\y_iterate&gt;
+
+forward LoadHousesCallback();
+
+#define MAX_HOUSES 10
+#define MAX_HOUSE_NAME (32 + 1)
+
+enum E_HOUSE
+{
+    hdbID,
+    hName[MAX_HOUSE_NAME]
+}
+
+new
+    handle,
+    Iterator:Houses&lt;MAX_HOUSES&gt;,
+    Houses[MAX_HOUSES][E_HOUSE]
+;
+
+public OnGameModeInit()
+{
+    handle = mysql_connect("localhost", "root", "test", "");
+    //Do some handle checking first!
+
+    LoadHouses();
+}
+
+LoadHouses()
+{
+    mysql_tquery(handle, "SELECT * FROM houses", "LoadHousesCallback");
+}
+
+public LoadHousesCallback()
+{
+    new
+        rows = cache_get_row_count(handle)
+    ;
+
+    if (!rows) return print("It seems there are no house rows, sorry");
+
+    for (new row = 0; row != rows; ++row) 
+    {
+        if (row == MAX_HOUSES) {
+            printf("Number of houses in your database (%d) is larger than " #MAX_HOUSES " slots can handle", rows);
+
+            //We can't load remaining rows :(
+            break;
+        }
+
+        Houses[row][hdbID] = cache_get_field_content_int(row, "id", handle);
+        cache_get_field_content(row, "name", Houses[row][hName], handle, MAX_HOUSE_NAME);
+        Iter_Add(Houses, row);
+    }
+
+    foreach(new house : Houses) {
+        printf("%d. DbID %d, name %s", house + 1, Houses[house][hdbID], Houses[house][hName]);
+    }
+
+    return 1;
+}
+
+public OnGameModeExit()
+{
+    mysql_close(handle);
+
+    return 1;
+}
+
+main() {
+}
+</code></pre>
+
+<p>That's quite a chunk of code, but we'll go through it step by step. </p>
+
+<pre><code>    mysql_tquery(handle, "SELECT * FROM houses", "LoadHousesCallback");
+</code></pre>
+
+<p>We request all houses from our database, and when they're fetched, please call <code>LoadHousesCallback</code>. </p>
+
+<pre><code> if (row == MAX_HOUSES) {
+     printf("Number of houses in your database (%d) is larger than " #MAX_HOUSES " slots can handle", rows);
+
+     //We can't load remaining rows :(
+     break;
+ }
+</code></pre>
+
+<p>It seems there are too many rows to load from database, and we have only <code>MAX_HOUSES</code> slots. That's unfortunate (but, in the future we'll use y_malloc to handle this).</p>
+
+<pre><code> Houses[row][hdbID] = cache_get_field_content_int(row, "id", handle);
+ cache_get_field_content(row, "name", Houses[row][hName], handle, MAX_HOUSE_NAME);
+ &gt;&gt;&gt; Iter_Add(Houses, row);
+</code></pre>
+
+<p>This is where magic happens, we add our newly loaded house to our iterator. That's it, nothing more is reuqired.</p>
+
+<pre><code>foreach(new house : Houses) {
+    printf("%d. DbID %d, name %s", house + 1, Houses[house][hdbID], Houses[house][hName]);
+}
+</code></pre>
+
+<p>As you can see we can use our <code>Houses</code> iterator, and it works just fine. And, even though we specifiec that <code>MAX_HOUSES</code> can handle 100 slots, this foreach will run only <strong>3</strong> times. How cool is that?</p>
+
+<h5 id="onesecondyounamedyouriteratorexactlylikeyourarrayhow">One second, you named your iterator exactly like your array. How?</h5>
+
+<p>It's simple, go back a few paragraphs. <code>Iterator:</code> is just a macro, so we have a new array, and a variable:</p>
+
+<pre><code>new
+    _Y_ITER_C9:Houses@YSII_Cg,
+    Houses@YSII_Ag[(100)+1]={(100)*2,(100)*2-1,...}
+;
+</code></pre>
+
+<p>So, in fact we have 3 different names: <code>Houses</code>, <code>Houses@YSII_Cg</code>, and <code>Houses@YSII_Ag</code>. It's really handy for us!.  </p>
+
+<h5 id="conclusion">Conclusion</h5>
+
+<p>That's it! I have shown you how to handle y_iterate in real world. I guess there are many question marks on your mind, but become a programmer - try, until something works. Or just ask me - either here in comments, or create a new thread in scripting help. After we'll go through mysql plugin and y_iterate, I'll show you more real-life usages of y_iterate.</p>
+
+<p>Cheers</p>
+        </section>
+
+        <footer class="post-footer">
+
+
+
+            <section class="author">
+                <h4><a href="/author/misiur/">Misiur</a></h4>
+
+                    <p>Read <a href="/author/misiur/">more posts</a> by this author.</p>
+                <div class="author-meta">
+                    
+                    
+                </div>
+            </section>
+
+
+            <section class="share">
+                <h4>Share this post</h4>
+                <a class="icon-twitter" href="https://twitter.com/share?text=y_iterate%20aka%20foreach%20-%20what%20is%20it%2C%20and%20how%20to%20use%20it&amp;url=http://misiur.github.io/2015/03/07/y_iterate-aka-foreach-what-is-it-and-how-to-use-it/" onclick="window.open(this.href, 'twitter-share', 'width=550,height=235');return false;">
+                    <span class="hidden">Twitter</span>
+                </a>
+                <a class="icon-facebook" href="https://www.facebook.com/sharer/sharer.php?u=http://misiur.github.io/2015/03/07/y_iterate-aka-foreach-what-is-it-and-how-to-use-it/" onclick="window.open(this.href, 'facebook-share','width=580,height=296');return false;">
+                    <span class="hidden">Facebook</span>
+                </a>
+                <a class="icon-google-plus" href="https://plus.google.com/share?url=http://misiur.github.io/2015/03/07/y_iterate-aka-foreach-what-is-it-and-how-to-use-it/" onclick="window.open(this.href, 'google-plus-share', 'width=490,height=530');return false;">
+                    <span class="hidden">Google+</span>
+                </a>
+            </section>
+
+        </footer>
+        
+        <div id="disqus_thread"></div>
+        <script type="text/javascript">
+            /* * * CONFIGURATION VARIABLES * * */
+            var disqus_shortname = 'misiurworkbench';
+            var disqus_identifier = 'ghost-6';
+            
+            /* * * DON'T EDIT BELOW THIS LINE * * */
+            (function() {
+                var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+                dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+                (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+            })();
+        </script>
+        <noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript" rel="nofollow">comments powered by Disqus.</a></noscript>
+    </article>
+</main>
+
+
+
+        <footer class="site-footer clearfix">
+            <section class="copyright"><a href="http://misiur.github.io">Workbench</a> © 2015</section>
+            <section class="poweredby">Proudly published with <a href="https://ghost.org">Ghost</a></section>
+        </footer>
+
+    </div>
+
+    <script src="/public/jquery.js?v=30e29fb91c"></script> <script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-12341674-2', 'auto');
+  ga('send', 'pageview');
+
+</script>
+
+    <script type="text/javascript" src="/assets/js/jquery.fitvids.js?v=30e29fb91c"></script>
+    <script type="text/javascript" src="/assets/js/index.js?v=30e29fb91c"></script>
+
+    <script type="text/javascript">
+        /* * * CONFIGURATION VARIABLES * * */
+        var disqus_shortname = 'misiurworkbench';
+        
+        /* * * DON'T EDIT BELOW THIS LINE * * */
+        (function () {
+            var s = document.createElement('script'); s.async = true;
+            s.type = 'text/javascript';
+            s.src = '//' + disqus_shortname + '.disqus.com/count.js';
+            (document.getElementsByTagName('HEAD')[0] || document.getElementsByTagName('BODY')[0]).appendChild(s);
+        }());
+    </script>
+</body>
