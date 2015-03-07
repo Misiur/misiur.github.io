@@ -1,0 +1,98 @@
+<rss xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:content="http://purl.org/rss/1.0/modules/content/" xmlns:atom="http://www.w3.org/2005/Atom" version="2.0"><channel><title>Workbench</title><description>Mostly programming stuff</description><link>http://misiur.github.io/</link><generator>Ghost 0.5</generator><lastBuildDate>Sat, 07 Mar 2015 13:54:59 GMT</lastBuildDate><atom:link href="http://misiur.github.io/rss/" rel="self" type="application/rss+xml"/><ttl>60</ttl><item><title>Buster for Windows</title><description>&lt;p&gt;This blog is powered by &lt;a href="https://ghost.org"&gt;ghost&lt;/a&gt;, pretty rad tool. However to get it running on github pages, you need a static version of your site. That's where &lt;a href="https://github.com/axitkhurana/buster"&gt;buster&lt;/a&gt; comes into play. It's a wrapper around wget, with few additional tasks for setting your website up.  &lt;/p&gt;
+
+&lt;h5 id="sowhatsthedeal"&gt;So what's the deal?&lt;/h5&gt;
+
+&lt;p&gt;NTFS filesystems can't handle &lt;code&gt;?&lt;/code&gt; in filenames. Nowadays assets are usually cached using query string (for example &lt;code&gt;asset/js/main.js?version=232314&lt;/code&gt;). When scraping website with wget, if you stumble upon such file, and wget has flag &lt;code&gt;--restrict-file-name=unix&lt;/code&gt; the file &lt;strong&gt;won't be downloaded at all&lt;/strong&gt;. That's really annoying, because I thought it'd be simply encoded as &lt;code&gt;%3F&lt;/code&gt;. I followed &lt;a href="http://leftofnull.com/2014/02/24/using-github-pages-with-ghost-and-buster-on-windows-part-2/index.html"&gt;this tutorial&lt;/a&gt;, however it seems wget for some reason applied rewrite to relative paths, even though it shouldn't with &lt;code&gt;restrict-file-name&lt;/code&gt; flag (I'm using msys 1.0 wget version). So I made a little edit to latest buster version so rewrite won't happen at all, added safety measure against duplicate files, and released it as a bundle. &lt;/p&gt;
+
+&lt;p&gt;&lt;a href="https://github.com/Misiur/buster"&gt;Here you go&lt;/a&gt;.&lt;/p&gt;</description><link>http://misiur.github.io/2015/03/06/b/</link><guid isPermaLink="false">1455c1bb-a9e4-4fc8-8311-772db85f5ee4</guid><category>Python</category><category>Blog</category><dc:creator>Misiur</dc:creator><pubDate>Fri, 06 Mar 2015 19:32:36 GMT</pubDate></item><item><title>Setting up your PAWN environment</title><description>&lt;p&gt;If you want to write cool gamemodes, your work environment should be as comfortable as possible. I'll share my standard setup, suitable for work with multiple separate projects. This guide is specific for &lt;strong&gt;windows&lt;/strong&gt;, but if you are running linux distro as your main OS, I guess you can handle that yourself.&lt;/p&gt;
+
+&lt;h3 id="listofcontents"&gt;List of contents&lt;/h3&gt;
+
+&lt;ol&gt;
+&lt;li&gt;Toolkit  &lt;/li&gt;
+&lt;li&gt;Folder layout  &lt;/li&gt;
+&lt;li&gt;Dependencies  &lt;/li&gt;
+&lt;li&gt;Editor  &lt;/li&gt;
+&lt;li&gt;Starting a new project&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;h3 id="toolkit"&gt;Toolkit&lt;/h3&gt;
+
+&lt;ol&gt;
+&lt;li&gt;&lt;a href="http://schinagl.priv.at/nt/hardlinkshellext/linkshellextension.html#download"&gt;Link shell extension&lt;/a&gt; - unfortunately windows doesn't support symlinks as nicely as unix, and vagrant/docker is overkill for our purposes. We'll share most libraries across projects, and we won't have to worry about updating pawn libraries one by one.  &lt;/li&gt;
+&lt;li&gt;&lt;a href="http://www.sublimetext.com/3"&gt;Sublime text 3&lt;/a&gt; - we'll go in-depth about that one later. It's free, but will nag you every now and then about buying it.  &lt;/li&gt;
+&lt;li&gt;&lt;a href="http://git-scm.com/downloads"&gt;Git for windows&lt;/a&gt; - windows latest version is 1.9.5, 2 isn't ported yet as it requires a lot of hacks around POSIX libraries. Maybe one day...  &lt;/li&gt;
+&lt;li&gt;&lt;em&gt;(optional)&lt;/em&gt; &lt;a href="https://www.virtualbox.org/"&gt;Virtualbox&lt;/a&gt; + &lt;a href="http://isoredirect.centos.org/centos/7/isos/x86_64/"&gt;CentOS x32&lt;/a&gt; - most servers are working on CentOS, so we have to make sure that our server won't crash for some random reason. This one is optional though, you can go rough.&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;Once you gather all required elements, let's start...&lt;/p&gt;
+
+&lt;h3 id="folderlayout"&gt;Folder layout&lt;/h3&gt;
+
+&lt;p&gt;Being organised is a very important trait to have if you want to be a good developer. This is the most basic setup you can get.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;- Your root workbench folder
+-- Template
+-- Resources
+-- Example project
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;code&gt;Resources&lt;/code&gt; folder will serve as a hub for keeping all PAWN libraries, and samp related things. &lt;code&gt;Template&lt;/code&gt; will serve as a base for each new project. &lt;/p&gt;
+
+&lt;h3 id="dependencies"&gt;Dependencies&lt;/h3&gt;
+
+&lt;p&gt;First, fetch yourself &lt;a href="http://sa-mp.com/download.php"&gt;samp server for windows&lt;/a&gt;. Save and extract it into your &lt;code&gt;Resources&lt;/code&gt; folder. After doing that, select &lt;code&gt;samp-server.exe&lt;/code&gt;, &lt;code&gt;samp-npc.exe&lt;/code&gt;, &lt;code&gt;announce.exe&lt;/code&gt; and &lt;code&gt;server.cfg&lt;/code&gt;, then right-click and select "Use as link source". Enter your &lt;code&gt;Template&lt;/code&gt; folder, right-click then select &lt;code&gt;Create link =&amp;gt; Clone hard link&lt;/code&gt;. Voila, now anytime you update your samp-server in &lt;code&gt;Resources&lt;/code&gt;, the one in &lt;code&gt;Template&lt;/code&gt; will be uploaded as well. &lt;/p&gt;
+
+&lt;p&gt;We need some directory initial directory structure. In &lt;code&gt;Template&lt;/code&gt; create &lt;code&gt;pawno&lt;/code&gt; folder with &lt;code&gt;include&lt;/code&gt; subfolder. Also create standard folders:  &lt;code&gt;gamemodes&lt;/code&gt;, &lt;code&gt;filterscripts&lt;/code&gt;, &lt;code&gt;scriptfiles&lt;/code&gt;, and &lt;code&gt;plugins&lt;/code&gt;.&lt;/p&gt;
+
+&lt;p&gt;Go back to your server folder, enter &lt;code&gt;pawno/include&lt;/code&gt;, select &lt;strong&gt;all&lt;/strong&gt; files, and use them as a link source as we did with &lt;code&gt;samp-server.exe&lt;/code&gt;. Then go into &lt;code&gt;Template/pawno/include&lt;/code&gt; and create hard link of all includes here.&lt;/p&gt;
+
+&lt;p&gt;We &lt;em&gt;could&lt;/em&gt; use standard compiler, but we won't as it has a whole bunch of known problems. &lt;a href="https://github.com/Zeex/pawn/releases"&gt;Download latest pawncc release for windows&lt;/a&gt; (don't download pawndisasm, as we don't need it). Select all files in the folder as a link source, and hard link them in your &lt;code&gt;Template/pawno&lt;/code&gt;.&lt;/p&gt;
+
+&lt;p&gt;Your compiler is ready for work!&lt;/p&gt;
+
+&lt;h3 id="editor"&gt;Editor&lt;/h3&gt;
+
+&lt;p&gt;You've probably already met PAWNO, the editor bundled with samp server. For beginners it's sufficient tool, but if you want to step up your game - you have to step up your editor as well. Introducing - &lt;strong&gt;sublime text 3&lt;/strong&gt;. It's lightning fast, has great community base, and is my go-to multitool. This is not an editor course, but I can highly recommend &lt;a href="http://code.tutsplus.com/articles/perfect-workflow-in-sublime-text-free-course--net-27293"&gt;this tutsplus.com article&lt;/a&gt;. It made me realise how much my previous editor sucked (in fact I used two, heavy IDE for webdevelopment, notepad++ for everything else). Of course, sublime is my personal preference, there are hundreds of awesome tools available - &lt;a href="https://atom.io/"&gt;&lt;strong&gt;Atom&lt;/strong&gt; for example&lt;/a&gt;.&lt;/p&gt;
+
+&lt;p&gt;You already should've installed it. We need to set it up for our PAWN development. &lt;a href="https://github.com/Southclaw/pawn-sublime-language"&gt;Download this Southclaw pawn package&lt;/a&gt;. In sublime menu select &lt;code&gt;Preferences =&amp;gt; Browse packages&lt;/code&gt;. Open &lt;code&gt;User&lt;/code&gt; folder, and paste there the package (preferable in a folder, so you won't be confused with what is what).&lt;/p&gt;
+
+&lt;p&gt;Now download &lt;a href="https://github.com/Misiur/sublime-pawn-build/releases"&gt;my default build system&lt;/a&gt;, and paste it into your &lt;code&gt;User&lt;/code&gt; folder as well.&lt;/p&gt;
+
+&lt;p&gt;Well done, now your environment is awesome!&lt;/p&gt;
+
+&lt;h2 id="startinganewproject"&gt;Starting a new project&lt;/h2&gt;
+
+&lt;p&gt;Finally! All that setup will be reusable for each new project. How to start a new one?&lt;/p&gt;
+
+&lt;ol&gt;
+&lt;li&gt;&lt;code&gt;git bash&lt;/code&gt; should be available in your start menu, fire it up.  &lt;/li&gt;
+&lt;li&gt;Navigate to your root folder (for me it would be &lt;code&gt;cd /d/Workbench&lt;/code&gt;), and type: &lt;code&gt;git init &amp;lt;name of your project&amp;gt;&lt;/code&gt; - keep the name short, as it will be the name of the project folder, for example &lt;code&gt;git init Foobar&lt;/code&gt;. Don't close the console.  &lt;/li&gt;
+&lt;li&gt;Copy all contents of &lt;code&gt;Template&lt;/code&gt; folder, and paste them into project folder. If you're wondering why we won't use hard links here, it's because sometimes updates will result in &lt;a href="http://en.wikipedia.org/wiki/Backward_compatibility"&gt;BC break&lt;/a&gt;. If you want bleeding-edge updates, hard link is the way to go, except &lt;code&gt;server.cfg&lt;/code&gt; file.  &lt;/li&gt;
+&lt;li&gt;In sublime text open new window. Select &lt;code&gt;Project -&amp;gt; Save project as...&lt;/code&gt;, and save it in your new project folder. Then click &lt;code&gt;Project -&amp;gt; Add Folder to project&lt;/code&gt; and select your project folder again. Now you should have all files in left-side menu.  &lt;/li&gt;
+&lt;li&gt;&lt;p&gt;Again in sublime, right-click top level folder, and select &lt;code&gt;New file&lt;/code&gt;. Immediately save is as &lt;code&gt;.gitignore&lt;/code&gt;. It's contents should be as follows:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;*
+!*/
+!.gitignore
+!filterscripts/**/*
+!gamemodes/**/*
+*.amx
+&lt;/code&gt;&lt;/pre&gt;&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Create main pwn file&lt;/strong&gt;. Assuming your project name is &lt;code&gt;HWRP&lt;/code&gt;, create a file named &lt;code&gt;gamemodes/HWRP.pwn&lt;/code&gt; which will be your main pwn file.  &lt;/li&gt;
+&lt;li&gt;&lt;p&gt;Dump some initial content into it:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;#include &amp;lt;a_samp&amp;gt;
+main() {
+    print("It seems everything works!");
+}
+&lt;/code&gt;&lt;/pre&gt;&lt;/li&gt;
+&lt;li&gt;Press &lt;code&gt;f5&lt;/code&gt; - if you've done everything correctly, your amx should be ready!  &lt;/li&gt;
+&lt;li&gt;I hope you didn't close your git bash, because it's gonna be important now. Navigate into your project's main folder, and execute &lt;code&gt;git add .gitignore gamemodes/&amp;lt;project name&amp;gt;.pwn&lt;/code&gt;, then &lt;code&gt;git commit -m "It seems I made a gamemode"&lt;/code&gt;. Voila, you now entered the big league of tracking changes in your files. I'll explain what git does some other time.&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;h3 id="conclusion"&gt;Conclusion&lt;/h3&gt;
+
+&lt;p&gt;That was a long process, but now your projects are not few scattered around HDD files, but properly managed, revisioned and structured files. If you stick around with my blog, you'll learn both PAWN and sublime text tricks, YSI library usage, and maybe we'll write some simple gamemode.&lt;/p&gt;
+
+&lt;p&gt;Thanks for reading!&lt;/p&gt;</description><link>http://misiur.github.io/2015/03/06/setting-up-your-pawn-environment/</link><guid isPermaLink="false">02ed9496-1a44-4fc6-a88c-fb74d2626811</guid><category>PAWN</category><category>Sublime Text 3</category><category>Tutorials</category><dc:creator>Misiur</dc:creator><pubDate>Fri, 06 Mar 2015 18:38:40 GMT</pubDate></item><item><title>Hello world</title><description>&lt;p&gt;Well, it's finally time for me to start a blog. Years of gathered programming quirks, which I'm certain should be known by more people. Expect new content soon!&lt;/p&gt;</description><link>http://misiur.github.io/2015/03/06/hello-world/</link><guid isPermaLink="false">e0fb39eb-a88a-4258-89e4-177c8e50f408</guid><category>General</category><dc:creator>Misiur</dc:creator><pubDate>Fri, 06 Mar 2015 13:37:09 GMT</pubDate></item></channel></rss>
