@@ -1,0 +1,223 @@
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+
+    <title>Getting ready for YSI</title>
+    <meta name="description" content="">
+
+    <meta name="HandheldFriendly" content="True">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link rel="shortcut icon" href="/favicon.ico">
+
+    <link rel="stylesheet" type="text/css" href="/assets/css/screen.css?v=27e222356c">
+    <link rel="stylesheet" type="text/css" href="//fonts.googleapis.com/css?family=Merriweather:300,700,700italic,300italic%7COpen+Sans:700,400">
+
+    <link rel="canonical" href="http://misiur.github.io/2015/03/07/getting-ready-for-ysi/">
+    
+    <meta property="og:site_name" content="Workbench">
+    <meta property="og:type" content="article">
+    <meta property="og:title" content="Getting ready for YSI">
+    <meta property="og:description" content="Writing a gamemode from scratch can be a long and tedious process (I should know, as I've started writing one in 2008, and lost all my progress because of a hd format... VCS is really important!). That's why you should...">
+    <meta property="og:url" content="http://misiur.github.io/2015/03/07/getting-ready-for-ysi/">
+    <meta property="article:published_time" content="2015-03-07T16:28:46.879Z">
+    <meta property="article:modified_time" content="2015-03-07T16:28:57.608Z">
+    <meta property="article:tag" content="PAWN">
+    <meta property="article:tag" content="Sublime Text 3">
+    
+    <meta name="twitter:card" content="summary">
+    <meta name="twitter:title" content="Getting ready for YSI">
+    <meta name="twitter:description" content="Writing a gamemode from scratch can be a long and tedious process (I should know, as I've started writing one in 2008, and lost all my progress because of a hd format... VCS is really important!). That's why you should...">
+    <meta name="twitter:url" content="http://misiur.github.io/2015/03/07/getting-ready-for-ysi/">
+    
+    <script type="application/ld+json">
+{
+    "@context": "http://schema.org",
+    "@type": "Article",
+    "publisher": "Workbench",
+    "author": {
+        "@type": "Person",
+        "name": "Misiur",
+        "url": "http://misiur.github.io/author/misiur",
+        "sameAs": null
+    },
+    "headline": "Getting ready for YSI",
+    "url": "http://misiur.github.io/2015/03/07/getting-ready-for-ysi/",
+    "datePublished": "2015-03-07T16:28:46.879Z",
+    "dateModified": "2015-03-07T16:28:57.608Z",
+    "keywords": "PAWN, Sublime Text 3",
+    "description": "Writing a gamemode from scratch can be a long and tedious process (I should know, as I&#x27;ve started writing one in 2008, and lost all my progress because of a hd format... VCS is really important!). That&#x27;s why you should..."
+}
+    </script>
+
+    <meta name="generator" content="Ghost 0.5">
+    <link rel="alternate" type="application/rss+xml" title="Workbench" href="http://misiur.github.io/rss/">
+</head>
+<body class="post-template tag-pawn tag-sublime-text-3 nav-closed">
+
+    <div class="nav">
+    <h3 class="nav-title">Menu</h3>
+    <a href="#" class="nav-close">
+        <span class="hidden">Close</span>
+    </a>
+    <ul>
+            <li class="nav-home" role="presentation"><a href="http://misiur.github.io/">Home</a></li>
+    </ul>
+    <a class="subscribe-button icon-feed" href="/rss/index.rss">Subscribe</a>
+</div>
+<span class="nav-cover"></span>
+
+
+    <div class="site-wrapper">
+
+        
+
+
+<header class="main-header post-head no-cover">
+    <nav class="main-nav  clearfix">
+        
+            <a class="menu-button" href="#"><span class="burger">☰</span><span class="word">Menu</span></a>
+    </nav>
+</header>
+
+<main class="content" role="main">
+    <article class="post tag-pawn tag-sublime-text-3">
+        <header class="post-header">
+            <h1 class="post-title">Getting ready for YSI</h1>
+            <section class="post-meta">
+                <time class="post-date" datetime="2015-03-07">07 March 2015</time>  on <a href="/tag/pawn/">PAWN</a>, <a href="/tag/sublime-text-3/">Sublime Text 3</a>
+            </section>
+        </header>
+        
+        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+        <!-- Main ad -->
+        <ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-7854008089817957" data-ad-slot="3303976623" data-ad-format="auto"></ins>
+        <script>
+        (adsbygoogle = window.adsbygoogle || []).push({});
+        </script>
+        
+        <section class="post-content">
+            <p>Writing a gamemode from scratch can be a long and tedious process (I should know, as I've started writing one in 2008, and lost all my progress because of a hd format... VCS is really important!). That's why you should rely on proven solutions. Welcome to the world of <a href="https://github.com/Y-Less/YSI">YSI</a>.  </p>
+
+<h4 id="whatisysi">What is YSI?</h4>
+
+<p>It's a collection of open source libraries written by <a href="http://y-less.com">Y_Less</a>. You don't have to know anything about how they work internally, they <em>Just Work</em> ™. Most popular library is <strong>y_iterate</strong>, formerly known as <strong>foreach</strong>. YSI alone contains <strong>44</strong> libraries, ranging from colour definition helpers, to complete player account system. You don't have to use all libraries, however whole YSI package is required as some of them are interdependent.  </p>
+
+<h4 id="motivation">Motivation</h4>
+
+<p>Y_Less usually releases a topic describing what the specific library does with simple example and is eager to help in <a href="http://forum.sa-mp.com/forumdisplay.php?f=12">sa-mp scripting help subforum</a> (I spend a lot of time there too). However the knowledge is scrambled, questions are repeated over and over again, people request real-life examples, and the wiki is <a href="http://ysi.wikia.com/wiki/YSI_Wiki">not yet complete</a>. If you know your way around YSI, feel free to contribute there, there's even a <a href="http://forum.sa-mp.com/showthread.php?t=387086">bug bounty</a> for your input! I don't like contributing to wikis, as the tone and guidelines are too strict (also that my english is quite below the required level for editorial writing), so that's why I'll just use my blog. We're going to use <strong>YSI 4</strong>, not the YSI 3.1 - that's very important distinction as a lot of thing changed, including file structure.  </p>
+
+<h4 id="installation">Installation</h4>
+
+<p>I'm going to assume your setup is similar to mine from <a href="/2015/03/06/setting-up-your-pawn-environment/">previous pawn post</a>. That's the current project layout</p>
+
+<p><img src="http://i.imgur.com/kPjI6tt.png" alt="Project layout as of last post"></p>
+
+<p>You might see that my sublime doesn't display binary files, and that's ok. Anyhow, time to fetch the YSI. There is one issue though <br>
+<img src="http://i.imgur.com/vZHjLXb.png" alt="Submodules">
+See this folder with @ and revision hash next to it? This is a submodule. If you wanted to download the repository the standard way, the contents of that thingy won't be downloaded. So: fire up your git bash, and navigate to our <code>Resources</code> folder. Now run <br>
+<code>git clone -b YSI.tl --single-branch --depth=1 --recursive https://github.com/Y-Less/YSI-Includes.git</code> (you can paste into git bash using <code>insert</code> button). Wait a while for files to download, and voila, latest YSI with its dependencies has been downloaded. Long story short: this command clones YSI-Includes repository, specifically a single branch - YSI.tl, and recurses through all dependencies downloading them. In the future to update to latest YSI just write <code>git pull</code> and it should work. Copy everything <strong>except files and folders starting with .git</strong> to your <code>Platform</code> and your new project. In your project folder type <code>git status</code> - if under untracked files you see pawno folder, double check that you've removed all .git* files from copied YSI.</p>
+
+<h6 id="alldone">All done!</h6>
+
+<p>Let's just test everything is hooked up properly and we can move on. Open up your main gamemode file, and write</p>
+
+<pre><code>#include &lt;a_samp&gt;
+#include &lt;YSI\y_va&gt;
+
+main() {
+    va_print("Hello world! %d %d %d", 1, 2, 3);
+}
+</code></pre>
+
+<p>Then compile (<code>Tools -&gt; Build</code>, <code>f5</code>, or <code>ctrl+shift+p</code> and search <code>build</code>). The result should look like this <br>
+<img src="http://i.imgur.com/9IGtoNg.png" alt="Build">
+If for some reason the compilation doesn't seem to run at all, remove hard links of pawn compiler and replace them with standard copied files. No idea why this happens.</p>
+
+<p>In next post I'll recommend some standard plugins, and we'll dig in into first YSI library, <strong>y_iterate</strong>.</p>
+        </section>
+
+        <footer class="post-footer">
+
+
+
+            <section class="author">
+                <h4><a href="/author/misiur/">Misiur</a></h4>
+
+                    <p>Read <a href="/author/misiur/">more posts</a> by this author.</p>
+                <div class="author-meta">
+                    
+                    
+                </div>
+            </section>
+
+
+            <section class="share">
+                <h4>Share this post</h4>
+                <a class="icon-twitter" href="https://twitter.com/share?text=Getting%20ready%20for%20YSI&amp;url=http://misiur.github.io/2015/03/07/getting-ready-for-ysi/" onclick="window.open(this.href, 'twitter-share', 'width=550,height=235');return false;">
+                    <span class="hidden">Twitter</span>
+                </a>
+                <a class="icon-facebook" href="https://www.facebook.com/sharer/sharer.php?u=http://misiur.github.io/2015/03/07/getting-ready-for-ysi/" onclick="window.open(this.href, 'facebook-share','width=580,height=296');return false;">
+                    <span class="hidden">Facebook</span>
+                </a>
+                <a class="icon-google-plus" href="https://plus.google.com/share?url=http://misiur.github.io/2015/03/07/getting-ready-for-ysi/" onclick="window.open(this.href, 'google-plus-share', 'width=490,height=530');return false;">
+                    <span class="hidden">Google+</span>
+                </a>
+            </section>
+
+        </footer>
+        
+        <div id="disqus_thread"></div>
+        <script type="text/javascript">
+            /* * * CONFIGURATION VARIABLES * * */
+            var disqus_shortname = 'misiurworkbench';
+            var disqus_identifier = 'ghost-5';
+            
+            /* * * DON'T EDIT BELOW THIS LINE * * */
+            (function() {
+                var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+                dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+                (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+            })();
+        </script>
+        <noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript" rel="nofollow">comments powered by Disqus.</a></noscript>
+    </article>
+</main>
+
+
+
+        <footer class="site-footer clearfix">
+            <section class="copyright"><a href="http://misiur.github.io">Workbench</a> © 2015</section>
+            <section class="poweredby">Proudly published with <a href="https://ghost.org">Ghost</a></section>
+        </footer>
+
+    </div>
+
+    <script src="/public/jquery.js?v=27e222356c"></script> <script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-12341674-2', 'auto');
+  ga('send', 'pageview');
+
+</script>
+
+    <script type="text/javascript" src="/assets/js/jquery.fitvids.js?v=27e222356c"></script>
+    <script type="text/javascript" src="/assets/js/index.js?v=27e222356c"></script>
+
+    <script type="text/javascript">
+        /* * * CONFIGURATION VARIABLES * * */
+        var disqus_shortname = 'misiurworkbench';
+        
+        /* * * DON'T EDIT BELOW THIS LINE * * */
+        (function () {
+            var s = document.createElement('script'); s.async = true;
+            s.type = 'text/javascript';
+            s.src = '//' + disqus_shortname + '.disqus.com/count.js';
+            (document.getElementsByTagName('HEAD')[0] || document.getElementsByTagName('BODY')[0]).appendChild(s);
+        }());
+    </script>
+</body>

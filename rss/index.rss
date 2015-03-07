@@ -1,4 +1,41 @@
-<rss xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:content="http://purl.org/rss/1.0/modules/content/" xmlns:atom="http://www.w3.org/2005/Atom" version="2.0"><channel><title>Workbench</title><description>Mostly programming stuff</description><link>http://misiur.github.io/</link><generator>Ghost 0.5</generator><lastBuildDate>Sat, 07 Mar 2015 14:01:58 GMT</lastBuildDate><atom:link href="http://misiur.github.io/rss/" rel="self" type="application/rss+xml"/><ttl>60</ttl><item><title>Buster for Windows</title><description>&lt;p&gt;This blog is powered by &lt;a href="https://ghost.org"&gt;ghost&lt;/a&gt;, pretty rad tool. However to get it running on github pages, you need a static version of your site. That's where &lt;a href="https://github.com/axitkhurana/buster"&gt;buster&lt;/a&gt; comes into play. It's a wrapper around wget, with few additional tasks for setting your website up.  &lt;/p&gt;
+<rss xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:content="http://purl.org/rss/1.0/modules/content/" xmlns:atom="http://www.w3.org/2005/Atom" version="2.0"><channel><title>Workbench</title><description>Mostly programming stuff</description><link>http://misiur.github.io/</link><generator>Ghost 0.5</generator><lastBuildDate>Sat, 07 Mar 2015 16:30:20 GMT</lastBuildDate><atom:link href="http://misiur.github.io/rss/" rel="self" type="application/rss+xml"/><ttl>60</ttl><item><title>Getting ready for YSI</title><description>&lt;p&gt;Writing a gamemode from scratch can be a long and tedious process (I should know, as I've started writing one in 2008, and lost all my progress because of a hd format... VCS is really important!). That's why you should rely on proven solutions. Welcome to the world of &lt;a href="https://github.com/Y-Less/YSI"&gt;YSI&lt;/a&gt;.  &lt;/p&gt;
+
+&lt;h4 id="whatisysi"&gt;What is YSI?&lt;/h4&gt;
+
+&lt;p&gt;It's a collection of open source libraries written by &lt;a href="http://y-less.com"&gt;Y_Less&lt;/a&gt;. You don't have to know anything about how they work internally, they &lt;em&gt;Just Work&lt;/em&gt; &amp;trade;. Most popular library is &lt;strong&gt;y_iterate&lt;/strong&gt;, formerly known as &lt;strong&gt;foreach&lt;/strong&gt;. YSI alone contains &lt;strong&gt;44&lt;/strong&gt; libraries, ranging from colour definition helpers, to complete player account system. You don't have to use all libraries, however whole YSI package is required as some of them are interdependent.  &lt;/p&gt;
+
+&lt;h4 id="motivation"&gt;Motivation&lt;/h4&gt;
+
+&lt;p&gt;Y_Less usually releases a topic describing what the specific library does with simple example and is eager to help in &lt;a href="http://forum.sa-mp.com/forumdisplay.php?f=12"&gt;sa-mp scripting help subforum&lt;/a&gt; (I spend a lot of time there too). However the knowledge is scrambled, questions are repeated over and over again, people request real-life examples, and the wiki is &lt;a href="http://ysi.wikia.com/wiki/YSI_Wiki"&gt;not yet complete&lt;/a&gt;. If you know your way around YSI, feel free to contribute there, there's even a &lt;a href="http://forum.sa-mp.com/showthread.php?t=387086"&gt;bug bounty&lt;/a&gt; for your input! I don't like contributing to wikis, as the tone and guidelines are too strict (also that my english is quite below the required level for editorial writing), so that's why I'll just use my blog. We're going to use &lt;strong&gt;YSI 4&lt;/strong&gt;, not the YSI 3.1 - that's very important distinction as a lot of thing changed, including file structure.  &lt;/p&gt;
+
+&lt;h4 id="installation"&gt;Installation&lt;/h4&gt;
+
+&lt;p&gt;I'm going to assume your setup is similar to mine from &lt;a href="http://misiur.github.io/2015/03/06/setting-up-your-pawn-environment/"&gt;previous pawn post&lt;/a&gt;. That's the current project layout&lt;/p&gt;
+
+&lt;p&gt;&lt;img src="http://i.imgur.com/kPjI6tt.png" alt="Project layout as of last post"&gt;&lt;/p&gt;
+
+&lt;p&gt;You might see that my sublime doesn't display binary files, and that's ok. Anyhow, time to fetch the YSI. There is one issue though &lt;br&gt;
+&lt;img src="http://i.imgur.com/vZHjLXb.png" alt="Submodules"&gt;
+See this folder with @ and revision hash next to it? This is a submodule. If you wanted to download the repository the standard way, the contents of that thingy won't be downloaded. So: fire up your git bash, and navigate to our &lt;code&gt;Resources&lt;/code&gt; folder. Now run &lt;br&gt;
+&lt;code&gt;git clone -b YSI.tl --single-branch --depth=1 --recursive https://github.com/Y-Less/YSI-Includes.git&lt;/code&gt; (you can paste into git bash using &lt;code&gt;insert&lt;/code&gt; button). Wait a while for files to download, and voila, latest YSI with its dependencies has been downloaded. Long story short: this command clones YSI-Includes repository, specifically a single branch - YSI.tl, and recurses through all dependencies downloading them. In the future to update to latest YSI just write &lt;code&gt;git pull&lt;/code&gt; and it should work. Copy everything &lt;strong&gt;except files and folders starting with .git&lt;/strong&gt; to your &lt;code&gt;Platform&lt;/code&gt; and your new project. In your project folder type &lt;code&gt;git status&lt;/code&gt; - if under untracked files you see pawno folder, double check that you've removed all .git* files from copied YSI.&lt;/p&gt;
+
+&lt;h6 id="alldone"&gt;All done!&lt;/h6&gt;
+
+&lt;p&gt;Let's just test everything is hooked up properly and we can move on. Open up your main gamemode file, and write&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;#include &amp;lt;a_samp&amp;gt;
+#include &amp;lt;YSI\y_va&amp;gt;
+
+main() {
+    va_print("Hello world! %d %d %d", 1, 2, 3);
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Then compile (&lt;code&gt;Tools -&amp;gt; Build&lt;/code&gt;, &lt;code&gt;f5&lt;/code&gt;, or &lt;code&gt;ctrl+shift+p&lt;/code&gt; and search &lt;code&gt;build&lt;/code&gt;). The result should look like this &lt;br&gt;
+&lt;img src="http://i.imgur.com/9IGtoNg.png" alt="Build"&gt;
+If for some reason the compilation doesn't seem to run at all, remove hard links of pawn compiler and replace them with standard copied files. No idea why this happens.&lt;/p&gt;
+
+&lt;p&gt;In next post I'll recommend some standard plugins, and we'll dig in into first YSI library, &lt;strong&gt;y_iterate&lt;/strong&gt;.&lt;/p&gt;</description><link>http://misiur.github.io/2015/03/07/getting-ready-for-ysi/</link><guid isPermaLink="false">d642b1f8-96c3-4c87-9462-a96894fa1d49</guid><category>PAWN</category><category>Sublime Text 3</category><dc:creator>Misiur</dc:creator><pubDate>Sat, 07 Mar 2015 16:28:46 GMT</pubDate></item><item><title>Buster for Windows</title><description>&lt;p&gt;This blog is powered by &lt;a href="https://ghost.org"&gt;ghost&lt;/a&gt;, pretty rad tool. However to get it running on github pages, you need a static version of your site. That's where &lt;a href="https://github.com/axitkhurana/buster"&gt;buster&lt;/a&gt; comes into play. It's a wrapper around wget, with few additional tasks for setting your website up.  &lt;/p&gt;
 
 &lt;h5 id="sowhatsthedeal"&gt;So what's the deal?&lt;/h5&gt;
 
