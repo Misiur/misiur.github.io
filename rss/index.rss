@@ -1,4 +1,71 @@
-<rss xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:content="http://purl.org/rss/1.0/modules/content/" xmlns:atom="http://www.w3.org/2005/Atom" version="2.0"><channel><title>Workbench</title><description>Mostly programming stuff</description><link>http://misiur.github.io/</link><generator>Ghost 0.5</generator><lastBuildDate>Sat, 07 Mar 2015 21:00:05 GMT</lastBuildDate><atom:link href="http://misiur.github.io/rss/" rel="self" type="application/rss+xml"/><ttl>60</ttl><item><title>y_iterate aka foreach - what is it, and how to use it</title><description>&lt;p&gt;As I mentioned previously, we'll start our journey with YSI at y_iterate. Before I even joined sa-mp forums, I knew of foreach. It's trivial in use, but only handful of people know how it works, and even less use other iterators than &lt;code&gt;Players&lt;/code&gt;. &lt;a href="http://forum.sa-mp.com/showthread.php?t=92679"&gt;Y_Less had already written quite detailed description of this include, refer to it for API.&lt;/a&gt;&lt;/p&gt;
+<rss xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:content="http://purl.org/rss/1.0/modules/content/" xmlns:atom="http://www.w3.org/2005/Atom" version="2.0"><channel><title>Workbench</title><description>Mostly programming stuff</description><link>http://misiur.github.io/</link><generator>Ghost 0.5</generator><lastBuildDate>Fri, 13 Mar 2015 00:01:38 GMT</lastBuildDate><atom:link href="http://misiur.github.io/rss/" rel="self" type="application/rss+xml"/><ttl>60</ttl><item><title>Y_iterate, y_hooks, y_utils and best coding practices case study</title><description>&lt;p&gt;I wanted to show you that even in simple cases you can improve your gamemode using y_iterate, also how to improve existing code. I'll be starting from very terrible code state and improve it step by step.&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;Disclaimer:&lt;/strong&gt; Between commits there are random updated lines - that's my fault as I made some mistakes writing this code (note that latest commit is fully tested). But still, this is not code to be used in real life as &lt;a href="https://github.com/MrMEEE/bumblebee-Old-and-abbandoned/commit/a047be85247755cdbe0acce6f1dafc8beb84f2ac"&gt;this wondeful example of why you can't hide your mistakes using git&lt;/a&gt;. &lt;/p&gt;
+
+&lt;p&gt;&lt;a href="https://github.com/Misiur/pawn-turorial/tree/c2e14ecf7a29ebfaa4b2e9a476e8754c4efbbd36"&gt;First stop: Terrible code.&lt;/a&gt;&lt;/p&gt;
+
+&lt;h6 id="whatswrongwithititworks"&gt;What's wrong with it? It works!&lt;/h6&gt;
+
+&lt;p&gt;That might be true, but let's assume you wanted to add more available houses. What then? Or if you wanted to allow longer house names - what then? Let's take a look.&lt;/p&gt;
+
+&lt;p&gt;&lt;a href="https://github.com/Misiur/pawn-turorial/commit/a77e8572ff6e6550b1b0997cc457a30875302a99"&gt;Constants inbound.&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;First of all. Really common mistake coders make, is to assume that to hold player name you need &lt;code&gt;MAX_PLAYER_NAME&lt;/code&gt; size. As you probably already know, strings are a special type of array. A word &lt;code&gt;tank&lt;/code&gt; is 4 characters, so 4 cells should suffice?&lt;/p&gt;
+
+&lt;p&gt;In reality that's an array &lt;code&gt;{'t', 'a', 'n', 'k', 0}&lt;/code&gt; consiting of &lt;strong&gt;5&lt;/strong&gt; cells. Functions like &lt;code&gt;strlen&lt;/code&gt; need to know when string ends - they end when they find &lt;code&gt;NUL&lt;/code&gt; character - which value is &lt;code&gt;0&lt;/code&gt;. So, if player name can have 25 (&lt;code&gt;MAX_PLAYER_NAME&lt;/code&gt;) characters, you need &lt;code&gt;MAX_PLAYER_NAME + 1&lt;/code&gt; to keep the &lt;code&gt;NUL&lt;/code&gt; character as well. &lt;/p&gt;
+
+&lt;p&gt;&lt;code&gt;House[300][E_HOUSE]&lt;/code&gt; - it works, that's fine. But if you have to loop through all houses, you have to check the size of this array, and then do something like &lt;code&gt;for (new house = 0; house != 300; ++house)&lt;/code&gt;. Ok, fine, but if you wanted to increase maximum allowed houses, you'd have to find all instances of 300 in context of houses, and replace them. So, just declare a new define &lt;code&gt;#define MAX_HOUSES 300&lt;/code&gt;, use &lt;code&gt;MAX_HOUSES&lt;/code&gt; instead of 300, and suddenly all you have to change is this single definition value.&lt;/p&gt;
+
+&lt;p&gt;As you might've already noticed, &lt;code&gt;sizeof&lt;/code&gt; used on enum field will not work as you'd want it to work. This makes working with strings really confusing, because functions like &lt;code&gt;format&lt;/code&gt;, &lt;code&gt;strcat&lt;/code&gt;, &lt;code&gt;strlen&lt;/code&gt;, and similar will fail. So, we defined a new definition called &lt;code&gt;MAX_HOUSE_NAME&lt;/code&gt;. And again, all you have to worry about is this single line.&lt;/p&gt;
+
+&lt;p&gt;&lt;a href="https://github.com/Misiur/pawn-turorial/commit/04a68b9c67cc91365b2f0b4864f7901c24ea39c9"&gt;Step 2: Arrays instead of numbered variables.&lt;/a&gt;&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;enum E_PLAYER
+{
+    pdbID,
+    pName[MAX_PLAYER_NAME + 1],
+    pHouse1,        
+    pHouse2        
+ }
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;This particular set up is a plague. Weapon slots, player cars, player houses created as a numbered variable - I've seen it all. All the time you have to check &lt;code&gt;pHouse1&lt;/code&gt; and &lt;code&gt;pHouse2&lt;/code&gt;. Also if you'd want to add new player house, you'd have to add additional field in database, find all places where you use that variables and add another clause. Not too handy, because there are more flexible ways of doing that stuff.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;mysql_format(handle, query, sizeof query, "SELECT p.*, ph.house_id FROM players p LEFT JOIN player_houses ph ON ph.player_id = p.id WHERE p.name = %e LIMIT 1", Player[playerid][pName]);
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;This is sql specific example (I'm not going to dig into sql explaining, as it's another complex language with thousands of awesome tutorials online, but check &lt;a href="http://blog.codinghorror.com/a-visual-explanation-of-sql-joins/"&gt;this out for visual explanation of joins&lt;/a&gt;), but now you can use single query to fetch all player houes at the same time as player data! Saved your time and effort.&lt;/p&gt;
+
+&lt;p&gt;As you can see I've also included &lt;code&gt;y_utils&lt;/code&gt;. Why? It contains useful functions such as &lt;a href="http://forum.sa-mp.com/showpost.php?p=1612209&amp;amp;postcount=4"&gt;&lt;code&gt;strcpy&lt;/code&gt;&lt;/a&gt; and &lt;a href="http://forum.sa-mp.com/showpost.php?p=1606781&amp;amp;postcount=2852"&gt;&lt;code&gt;memset&lt;/code&gt;&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;a href="https://github.com/Misiur/pawn-turorial/commit/e36fb75cb6ad13b92610fdd72866541be48f2a51"&gt;Optional step 2A.&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;If you just want to check if house is preowned, you don't need additional field in database just to store that, use previously mentioned power of SQL to achieve that. &lt;/p&gt;
+
+&lt;p&gt;&lt;a href="https://github.com/Misiur/pawn-turorial/commit/c0329ad2e3be2d06bd0a08d68ac95989b185a7e1"&gt;Step 3: Offline player names.&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;I've seen a lot of half-baked solutions, like opening all player files, or separate query just to fetch offline player names owning their houses. With &lt;br&gt;
+&lt;code&gt;mysql_tquery(handle, "SELECT h.*, p.name AS player_name FROM houses h LEFT JOIN player_houses ph ON ph.house_id = h.id LEFT JOIN players p ON p.id = ph.player_id", "OnHousesLoaded");&lt;/code&gt; you just fetched all houses and their owner names. Awesome! &lt;/p&gt;
+
+&lt;p&gt;&lt;a href="https://github.com/Misiur/pawn-turorial/commit/50e3ea79b63b44fcb039dc66ee2bbc64a3a787a0"&gt;Step 4: House indexes.&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;Ok, previously we've fetched houses database id, but everytime we'd need house array index, we'd have to loop through all houses and check if player house database id is equal to that of a house. Not ideal. So, just reassign value of house database id to current array index. Works perfectly. This is the ceiling of how much we can get using stock pawn functions. &lt;/p&gt;
+
+&lt;p&gt;&lt;a href="https://github.com/Misiur/pawn-turorial/commit/c42472e4ebcb02fe5de10eb0ea987dda9b7fec4f"&gt;Step 4: Add y_iterate.&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;Your functions work, everything is good, but sometimes house functions lag, especially if you have thousands of houses. What to do about it? Use y_iterate! Now instead of looping through all house/player house slots, you'll only iterate through taken slots. Time saved and lag reduced: a lot.&lt;/p&gt;
+
+&lt;p&gt;&lt;a href="https://github.com/Misiur/pawn-turorial/commit/74bc0419f99978dbada37d26f81710846474cea1"&gt;Step 5: Separation of concerns, aka SRP - Single Responsibility Principle.&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;You've probably already seen people boasting about how their gamemode has 400k lines. If they're happy with it, I'm glad. However if you want to edit/disable a specific functionality you have to dig through all those lines. That's a nightmare, I can tell you that. So, we'll separate our player and house functionalities into separate files. Using y_hooks is as simple as that, all you have to do is to &lt;code&gt;#include &amp;lt;YSI\y_hooks&amp;gt;&lt;/code&gt; and automagically you can separate files across files and even filterscripts! &lt;a href="https://github.com/Misiur/pawn-turorial/tree/74bc0419f99978dbada37d26f81710846474cea1"&gt;Full layout to be browsed here&lt;/a&gt;.&lt;/p&gt;
+
+&lt;p&gt;&lt;a href="https://github.com/Misiur/pawn-turorial/commit/22de9dd88d06d297d8d834dfcf4e8b6e45735585"&gt;Step 6: Logic coupling using y_inline.&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;This one is semi-optional, but the source of my example uses blueg mysql plugin, and y&lt;em&gt;dialogs (using y&lt;/em&gt;inline) tutorial is in production. As you can see, now you don't have to create separate &lt;code&gt;public&lt;/code&gt; function to handle threaded query response. I'm not certain, but inline functions might be faster than normal public callbacks!&lt;/p&gt;
+
+&lt;h4 id="conclusion"&gt;Conclusion&lt;/h4&gt;
+
+&lt;p&gt;If your code made any mistakes like this example crooked code, rethink if you want to commit them anymore. You can make life of yours and other developers easier. That applies especially to you if intend to release your gamemode to other people.&lt;/p&gt;</description><link>http://misiur.github.io/2015/03/13/y_iterate-y_hooks-y_utils-and-best-coding-practices-case-study/</link><guid isPermaLink="false">a2d2a272-32e6-4e52-9ff9-e70342b386ba</guid><category>PAWN</category><category>Tutorials</category><dc:creator>Misiur</dc:creator><pubDate>Thu, 12 Mar 2015 23:54:42 GMT</pubDate></item><item><title>y_iterate aka foreach - what is it, and how to use it</title><description>&lt;p&gt;As I mentioned previously, we'll start our journey with YSI at y_iterate. Before I even joined sa-mp forums, I knew of foreach. It's trivial in use, but only handful of people know how it works, and even less use other iterators than &lt;code&gt;Players&lt;/code&gt;. &lt;a href="http://forum.sa-mp.com/showthread.php?t=92679"&gt;Y_Less had already written quite detailed description of this include, refer to it for API.&lt;/a&gt;&lt;/p&gt;
 
 &lt;h5 id="whyforeachisfasterthanstandardplayerloop"&gt;Why foreach is faster than standard player loop?&lt;/h5&gt;
 
@@ -157,7 +224,7 @@ main() {
 
 &lt;p&gt;That's it! I have shown you how to handle y_iterate in real world. I guess there are many question marks on your mind, but become a programmer - try, until something works. Or just ask me - either here in comments, or create a new thread in scripting help. After we'll go through mysql plugin and y_iterate, I'll show you more real-life usages of y_iterate.&lt;/p&gt;
 
-&lt;p&gt;Cheers&lt;/p&gt;</description><link>http://misiur.github.io/2015/03/07/y_iterate-aka-foreach-what-is-it-and-how-to-use-it/</link><guid isPermaLink="false">ce643410-e09f-4fe7-b2d3-147a3d6070d4</guid><category>PAWN</category><category>Sublime Text 3</category><dc:creator>Misiur</dc:creator><pubDate>Sat, 07 Mar 2015 20:59:18 GMT</pubDate></item><item><title>Getting ready for YSI</title><description>&lt;p&gt;Writing a gamemode from scratch can be a long and tedious process (I should know, as I've started writing one in 2008, and lost all my progress because of a hd format... VCS is really important!). That's why you should rely on proven solutions. Welcome to the world of &lt;a href="https://github.com/Y-Less/YSI"&gt;YSI&lt;/a&gt;.  &lt;/p&gt;
+&lt;p&gt;Cheers&lt;/p&gt;</description><link>http://misiur.github.io/2015/03/07/y_iterate-aka-foreach-what-is-it-and-how-to-use-it/</link><guid isPermaLink="false">ce643410-e09f-4fe7-b2d3-147a3d6070d4</guid><category>PAWN</category><category>Sublime Text 3</category><category>Tutorials</category><dc:creator>Misiur</dc:creator><pubDate>Sat, 07 Mar 2015 20:59:18 GMT</pubDate></item><item><title>Getting ready for YSI</title><description>&lt;p&gt;Writing a gamemode from scratch can be a long and tedious process (I should know, as I've started writing one in 2008, and lost all my progress because of a hd format... VCS is really important!). That's why you should rely on proven solutions. Welcome to the world of &lt;a href="https://github.com/Y-Less/YSI"&gt;YSI&lt;/a&gt;.  &lt;/p&gt;
 
 &lt;h4 id="whatisysi"&gt;What is YSI?&lt;/h4&gt;
 
@@ -194,13 +261,15 @@ main() {
 &lt;img src="http://i.imgur.com/9IGtoNg.png" alt="Build"&gt;
 If for some reason the compilation doesn't seem to run at all, remove hard links of pawn compiler and replace them with standard copied files. No idea why this happens.&lt;/p&gt;
 
-&lt;p&gt;In next post I'll recommend some standard plugins, and we'll dig in into first YSI library, &lt;strong&gt;y_iterate&lt;/strong&gt;.&lt;/p&gt;</description><link>http://misiur.github.io/2015/03/07/getting-ready-for-ysi/</link><guid isPermaLink="false">d642b1f8-96c3-4c87-9462-a96894fa1d49</guid><category>PAWN</category><category>Sublime Text 3</category><dc:creator>Misiur</dc:creator><pubDate>Sat, 07 Mar 2015 16:28:46 GMT</pubDate></item><item><title>Buster for Windows</title><description>&lt;p&gt;This blog is powered by &lt;a href="https://ghost.org"&gt;ghost&lt;/a&gt;, pretty rad tool. However to get it running on github pages, you need a static version of your site. That's where &lt;a href="https://github.com/axitkhurana/buster"&gt;buster&lt;/a&gt; comes into play. It's a wrapper around wget, with few additional tasks for setting your website up.  &lt;/p&gt;
+&lt;p&gt;In next post I'll recommend some standard plugins, and we'll dig in into first YSI library, &lt;strong&gt;y_iterate&lt;/strong&gt;.&lt;/p&gt;</description><link>http://misiur.github.io/2015/03/07/getting-ready-for-ysi/</link><guid isPermaLink="false">d642b1f8-96c3-4c87-9462-a96894fa1d49</guid><category>PAWN</category><category>Sublime Text 3</category><category>Tutorials</category><dc:creator>Misiur</dc:creator><pubDate>Sat, 07 Mar 2015 16:28:46 GMT</pubDate></item><item><title>Buster for Windows</title><description>&lt;p&gt;This blog is powered by &lt;a href="https://ghost.org"&gt;ghost&lt;/a&gt;, pretty rad tool. However to get it running on github pages, you need a static version of your site. That's where &lt;a href="https://github.com/axitkhurana/buster"&gt;buster&lt;/a&gt; comes into play. It's a wrapper around wget, with few additional tasks for setting your website up.  &lt;/p&gt;
 
 &lt;h5 id="sowhatsthedeal"&gt;So what's the deal?&lt;/h5&gt;
 
 &lt;p&gt;NTFS filesystems can't handle &lt;code&gt;?&lt;/code&gt; in filenames. Nowadays assets are usually cached using query string (for example &lt;code&gt;asset/js/main.js?version=232314&lt;/code&gt;). When scraping website with wget, if you stumble upon such file, and wget has flag &lt;code&gt;--restrict-file-name=unix&lt;/code&gt; the file &lt;strong&gt;won't be downloaded at all&lt;/strong&gt;. That's really annoying, because I thought it'd be simply encoded as &lt;code&gt;%3F&lt;/code&gt;. I followed &lt;a href="http://leftofnull.com/2014/02/24/using-github-pages-with-ghost-and-buster-on-windows-part-2/index.html"&gt;this tutorial&lt;/a&gt;, however it seems wget for some reason applied rewrite to relative paths, even though it shouldn't with &lt;code&gt;restrict-file-name&lt;/code&gt; flag (I'm using msys 1.0 wget version). So I made a little edit to latest buster version so rewrite won't happen at all, added safety measure against duplicate files, and released it as a bundle. &lt;/p&gt;
 
 &lt;p&gt;&lt;a href="https://github.com/Misiur/buster"&gt;Here you go&lt;/a&gt;.&lt;/p&gt;</description><link>http://misiur.github.io/2015/03/06/b/</link><guid isPermaLink="false">1455c1bb-a9e4-4fc8-8311-772db85f5ee4</guid><category>Python</category><category>Blog</category><dc:creator>Misiur</dc:creator><pubDate>Fri, 06 Mar 2015 19:32:36 GMT</pubDate></item><item><title>Setting up your PAWN environment</title><description>&lt;p&gt;If you want to write cool gamemodes, your work environment should be as comfortable as possible. I'll share my standard setup, suitable for work with multiple separate projects. This guide is specific for &lt;strong&gt;windows&lt;/strong&gt;, but if you are running linux distro as your main OS, I guess you can handle that yourself.&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;Update:&lt;/strong&gt; It seems that I was wrong about windows symlinks, they aren't that terrible! Substitute every instance of "hard link" in this tutorial to "symlink". The link shell extension provides option to do that as well, and your links can now survive source updates.&lt;/p&gt;
 
 &lt;h3 id="listofcontents"&gt;List of contents&lt;/h3&gt;
 

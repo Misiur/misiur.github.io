@@ -1,0 +1,252 @@
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+
+    <title>Y_iterate, y_hooks, y_utils and best coding practices case study</title>
+    <meta name="description" content="">
+
+    <meta name="HandheldFriendly" content="True">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link rel="shortcut icon" href="/favicon.ico">
+
+    <link rel="stylesheet" type="text/css" href="/assets/css/screen.css?v=ee34c40904">
+    <link rel="stylesheet" type="text/css" href="//fonts.googleapis.com/css?family=Merriweather:300,700,700italic,300italic%7COpen+Sans:700,400">
+
+    <link rel="canonical" href="http://misiur.github.io/2015/03/13/y_iterate-case-study/">
+    
+    <meta property="og:site_name" content="Workbench">
+    <meta property="og:type" content="article">
+    <meta property="og:title" content="Y_iterate, y_hooks, y_utils and best coding practices case study">
+    <meta property="og:description" content="I wanted to show you that even in simple cases you can improve your gamemode using y_iterate, also how to improve existing code. I'll be starting from very terrible code state and improve it step by step. Disclaimer: Between...">
+    <meta property="og:url" content="http://misiur.github.io/2015/03/13/y_iterate-case-study/">
+    <meta property="article:published_time" content="2015-03-12T23:54:42.644Z">
+    <meta property="article:modified_time" content="2015-03-12T23:57:41.683Z">
+    <meta property="article:tag" content="PAWN">
+    <meta property="article:tag" content="Tutorials">
+    
+    <meta name="twitter:card" content="summary">
+    <meta name="twitter:title" content="Y_iterate, y_hooks, y_utils and best coding practices case study">
+    <meta name="twitter:description" content="I wanted to show you that even in simple cases you can improve your gamemode using y_iterate, also how to improve existing code. I'll be starting from very terrible code state and improve it step by step. Disclaimer: Between...">
+    <meta name="twitter:url" content="http://misiur.github.io/2015/03/13/y_iterate-case-study/">
+    
+    <script type="application/ld+json">
+{
+    "@context": "http://schema.org",
+    "@type": "Article",
+    "publisher": "Workbench",
+    "author": {
+        "@type": "Person",
+        "name": "Misiur",
+        "url": "http://misiur.github.io/author/misiur",
+        "sameAs": null
+    },
+    "headline": "Y_iterate, y_hooks, y_utils and best coding practices case study",
+    "url": "http://misiur.github.io/2015/03/13/y_iterate-case-study/",
+    "datePublished": "2015-03-12T23:54:42.644Z",
+    "dateModified": "2015-03-12T23:57:41.683Z",
+    "keywords": "PAWN, Tutorials",
+    "description": "I wanted to show you that even in simple cases you can improve your gamemode using y_iterate, also how to improve existing code. I&#x27;ll be starting from very terrible code state and improve it step by step. Disclaimer: Between..."
+}
+    </script>
+
+    <meta name="generator" content="Ghost 0.5">
+    <link rel="alternate" type="application/rss+xml" title="Workbench" href="http://misiur.github.io/rss/">
+</head>
+<body class="post-template tag-pawn tag-tutorials nav-closed">
+
+    <div class="nav">
+    <h3 class="nav-title">Menu</h3>
+    <a href="#" class="nav-close">
+        <span class="hidden">Close</span>
+    </a>
+    <ul>
+            <li class="nav-home" role="presentation"><a href="http://misiur.github.io/">Home</a></li>
+    </ul>
+    <a class="subscribe-button icon-feed" href="/rss/index.rss">Subscribe</a>
+</div>
+<span class="nav-cover"></span>
+
+
+    <div class="site-wrapper">
+
+        
+
+
+<header class="main-header post-head no-cover">
+    <nav class="main-nav  clearfix">
+        
+            <a class="menu-button" href="#"><span class="burger">☰</span><span class="word">Menu</span></a>
+    </nav>
+</header>
+
+<main class="content" role="main">
+    <article class="post tag-pawn tag-tutorials">
+        <header class="post-header">
+            <h1 class="post-title">Y_iterate, y_hooks, y_utils and best coding practices case study</h1>
+            <section class="post-meta">
+                <time class="post-date" datetime="2015-03-13">13 March 2015</time>  on <a href="/tag/pawn/">PAWN</a>, <a href="/tag/tutorials/">Tutorials</a>
+            </section>
+        </header>
+        
+        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+        <!-- Main ad -->
+        <ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-7854008089817957" data-ad-slot="3303976623" data-ad-format="auto"></ins>
+        <script>
+        (adsbygoogle = window.adsbygoogle || []).push({});
+        </script>
+        
+        <section class="post-content">
+            <p>I wanted to show you that even in simple cases you can improve your gamemode using y_iterate, also how to improve existing code. I'll be starting from very terrible code state and improve it step by step.</p>
+
+<p><strong>Disclaimer:</strong> Between commits there are random updated lines - that's my fault as I made some mistakes writing this code (note that latest commit is fully tested). But still, this is not code to be used in real life as <a href="https://github.com/MrMEEE/bumblebee-Old-and-abbandoned/commit/a047be85247755cdbe0acce6f1dafc8beb84f2ac">this wondeful example of why you can't hide your mistakes using git</a>. </p>
+
+<p><a href="https://github.com/Misiur/pawn-turorial/tree/c2e14ecf7a29ebfaa4b2e9a476e8754c4efbbd36">First stop: Terrible code.</a></p>
+
+<h6 id="whatswrongwithititworks">What's wrong with it? It works!</h6>
+
+<p>That might be true, but let's assume you wanted to add more available houses. What then? Or if you wanted to allow longer house names - what then? Let's take a look.</p>
+
+<p><a href="https://github.com/Misiur/pawn-turorial/commit/a77e8572ff6e6550b1b0997cc457a30875302a99">Constants inbound.</a></p>
+
+<p>First of all. Really common mistake coders make, is to assume that to hold player name you need <code>MAX_PLAYER_NAME</code> size. As you probably already know, strings are a special type of array. A word <code>tank</code> is 4 characters, so 4 cells should suffice?</p>
+
+<p>In reality that's an array <code>{'t', 'a', 'n', 'k', 0}</code> consiting of <strong>5</strong> cells. Functions like <code>strlen</code> need to know when string ends - they end when they find <code>NUL</code> character - which value is <code>0</code>. So, if player name can have 25 (<code>MAX_PLAYER_NAME</code>) characters, you need <code>MAX_PLAYER_NAME + 1</code> to keep the <code>NUL</code> character as well. </p>
+
+<p><code>House[300][E_HOUSE]</code> - it works, that's fine. But if you have to loop through all houses, you have to check the size of this array, and then do something like <code>for (new house = 0; house != 300; ++house)</code>. Ok, fine, but if you wanted to increase maximum allowed houses, you'd have to find all instances of 300 in context of houses, and replace them. So, just declare a new define <code>#define MAX_HOUSES 300</code>, use <code>MAX_HOUSES</code> instead of 300, and suddenly all you have to change is this single definition value.</p>
+
+<p>As you might've already noticed, <code>sizeof</code> used on enum field will not work as you'd want it to work. This makes working with strings really confusing, because functions like <code>format</code>, <code>strcat</code>, <code>strlen</code>, and similar will fail. So, we defined a new definition called <code>MAX_HOUSE_NAME</code>. And again, all you have to worry about is this single line.</p>
+
+<p><a href="https://github.com/Misiur/pawn-turorial/commit/04a68b9c67cc91365b2f0b4864f7901c24ea39c9">Step 2: Arrays instead of numbered variables.</a></p>
+
+<pre><code>enum E_PLAYER
+{
+    pdbID,
+    pName[MAX_PLAYER_NAME + 1],
+    pHouse1,        
+    pHouse2        
+ }
+</code></pre>
+
+<p>This particular set up is a plague. Weapon slots, player cars, player houses created as a numbered variable - I've seen it all. All the time you have to check <code>pHouse1</code> and <code>pHouse2</code>. Also if you'd want to add new player house, you'd have to add additional field in database, find all places where you use that variables and add another clause. Not too handy, because there are more flexible ways of doing that stuff.</p>
+
+<pre><code>mysql_format(handle, query, sizeof query, "SELECT p.*, ph.house_id FROM players p LEFT JOIN player_houses ph ON ph.player_id = p.id WHERE p.name = %e LIMIT 1", Player[playerid][pName]);
+</code></pre>
+
+<p>This is sql specific example (I'm not going to dig into sql explaining, as it's another complex language with thousands of awesome tutorials online, but check <a href="http://blog.codinghorror.com/a-visual-explanation-of-sql-joins/">this out for visual explanation of joins</a>), but now you can use single query to fetch all player houes at the same time as player data! Saved your time and effort.</p>
+
+<p>As you can see I've also included <code>y_utils</code>. Why? It contains useful functions such as <a href="http://forum.sa-mp.com/showpost.php?p=1612209&amp;postcount=4"><code>strcpy</code></a> and <a href="http://forum.sa-mp.com/showpost.php?p=1606781&amp;postcount=2852"><code>memset</code></a></p>
+
+<p><a href="https://github.com/Misiur/pawn-turorial/commit/e36fb75cb6ad13b92610fdd72866541be48f2a51">Optional step 2A.</a></p>
+
+<p>If you just want to check if house is preowned, you don't need additional field in database just to store that, use previously mentioned power of SQL to achieve that. </p>
+
+<p><a href="https://github.com/Misiur/pawn-turorial/commit/c0329ad2e3be2d06bd0a08d68ac95989b185a7e1">Step 3: Offline player names.</a></p>
+
+<p>I've seen a lot of half-baked solutions, like opening all player files, or separate query just to fetch offline player names owning their houses. With <br>
+<code>mysql_tquery(handle, "SELECT h.*, p.name AS player_name FROM houses h LEFT JOIN player_houses ph ON ph.house_id = h.id LEFT JOIN players p ON p.id = ph.player_id", "OnHousesLoaded");</code> you just fetched all houses and their owner names. Awesome! </p>
+
+<p><a href="https://github.com/Misiur/pawn-turorial/commit/50e3ea79b63b44fcb039dc66ee2bbc64a3a787a0">Step 4: House indexes.</a></p>
+
+<p>Ok, previously we've fetched houses database id, but everytime we'd need house array index, we'd have to loop through all houses and check if player house database id is equal to that of a house. Not ideal. So, just reassign value of house database id to current array index. Works perfectly. This is the ceiling of how much we can get using stock pawn functions. </p>
+
+<p><a href="https://github.com/Misiur/pawn-turorial/commit/c42472e4ebcb02fe5de10eb0ea987dda9b7fec4f">Step 4: Add y_iterate.</a></p>
+
+<p>Your functions work, everything is good, but sometimes house functions lag, especially if you have thousands of houses. What to do about it? Use y_iterate! Now instead of looping through all house/player house slots, you'll only iterate through taken slots. Time saved and lag reduced: a lot.</p>
+
+<p><a href="https://github.com/Misiur/pawn-turorial/commit/74bc0419f99978dbada37d26f81710846474cea1">Step 5: Separation of concerns, aka SRP - Single Responsibility Principle.</a></p>
+
+<p>You've probably already seen people boasting about how their gamemode has 400k lines. If they're happy with it, I'm glad. However if you want to edit/disable a specific functionality you have to dig through all those lines. That's a nightmare, I can tell you that. So, we'll separate our player and house functionalities into separate files. Using y_hooks is as simple as that, all you have to do is to <code>#include &lt;YSI\y_hooks&gt;</code> and automagically you can separate files across files and even filterscripts! <a href="https://github.com/Misiur/pawn-turorial/tree/74bc0419f99978dbada37d26f81710846474cea1">Full layout to be browsed here</a>.</p>
+
+<p><a href="https://github.com/Misiur/pawn-turorial/commit/22de9dd88d06d297d8d834dfcf4e8b6e45735585">Step 6: Logic coupling using y_inline.</a></p>
+
+<p>This one is semi-optional, but the source of my example uses blueg mysql plugin, and y<em>dialogs (using y</em>inline) tutorial is in production. As you can see, now you don't have to create separate <code>public</code> function to handle threaded query response. I'm not certain, but inline functions might be faster than normal public callbacks!</p>
+
+<h4 id="conclusion">Conclusion</h4>
+
+<p>If your code made any mistakes like this example crooked code, rethink if you want to commit them anymore. You can make life of yours and other developers easier. That applies especially to you if intend to release your gamemode to other people.</p>
+        </section>
+
+        <footer class="post-footer">
+
+
+
+            <section class="author">
+                <h4><a href="/author/misiur/">Misiur</a></h4>
+
+                    <p>Read <a href="/author/misiur/">more posts</a> by this author.</p>
+                <div class="author-meta">
+                    
+                    
+                </div>
+            </section>
+
+
+            <section class="share">
+                <h4>Share this post</h4>
+                <a class="icon-twitter" href="https://twitter.com/share?text=Y_iterate%2C%20y_hooks%2C%20y_utils%20and%20best%20coding%20practices%20case%20study&amp;url=http://misiur.github.io/2015/03/13/y_iterate-case-study/" onclick="window.open(this.href, 'twitter-share', 'width=550,height=235');return false;">
+                    <span class="hidden">Twitter</span>
+                </a>
+                <a class="icon-facebook" href="https://www.facebook.com/sharer/sharer.php?u=http://misiur.github.io/2015/03/13/y_iterate-case-study/" onclick="window.open(this.href, 'facebook-share','width=580,height=296');return false;">
+                    <span class="hidden">Facebook</span>
+                </a>
+                <a class="icon-google-plus" href="https://plus.google.com/share?url=http://misiur.github.io/2015/03/13/y_iterate-case-study/" onclick="window.open(this.href, 'google-plus-share', 'width=490,height=530');return false;">
+                    <span class="hidden">Google+</span>
+                </a>
+            </section>
+
+        </footer>
+        
+        <div id="disqus_thread"></div>
+        <script type="text/javascript">
+            /* * * CONFIGURATION VARIABLES * * */
+            var disqus_shortname = 'misiurworkbench';
+            var disqus_identifier = 'ghost-9';
+            
+            /* * * DON'T EDIT BELOW THIS LINE * * */
+            (function() {
+                var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+                dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+                (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+            })();
+        </script>
+        <noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript" rel="nofollow">comments powered by Disqus.</a></noscript>
+    </article>
+</main>
+
+
+
+        <footer class="site-footer clearfix">
+            <section class="copyright"><a href="http://misiur.github.io">Workbench</a> © 2015</section>
+            <section class="poweredby">Proudly published with <a href="https://ghost.org">Ghost</a></section>
+        </footer>
+
+    </div>
+
+    <script src="/public/jquery.js?v=ee34c40904"></script> <script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-12341674-2', 'auto');
+  ga('send', 'pageview');
+
+</script>
+
+    <script type="text/javascript" src="/assets/js/jquery.fitvids.js?v=ee34c40904"></script>
+    <script type="text/javascript" src="/assets/js/index.js?v=ee34c40904"></script>
+
+    <script type="text/javascript">
+        /* * * CONFIGURATION VARIABLES * * */
+        var disqus_shortname = 'misiurworkbench';
+        
+        /* * * DON'T EDIT BELOW THIS LINE * * */
+        (function () {
+            var s = document.createElement('script'); s.async = true;
+            s.type = 'text/javascript';
+            s.src = '//' + disqus_shortname + '.disqus.com/count.js';
+            (document.getElementsByTagName('HEAD')[0] || document.getElementsByTagName('BODY')[0]).appendChild(s);
+        }());
+    </script>
+</body>
