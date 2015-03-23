@@ -1,4 +1,115 @@
-<rss xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:content="http://purl.org/rss/1.0/modules/content/" xmlns:atom="http://www.w3.org/2005/Atom" version="2.0"><channel><title>Workbench</title><description>Mostly programming stuff</description><link>http://misiur.github.io/</link><generator>Ghost 0.5</generator><lastBuildDate>Tue, 17 Mar 2015 17:30:24 GMT</lastBuildDate><atom:link href="http://misiur.github.io/rss/" rel="self" type="application/rss+xml"/><ttl>60</ttl><item><title>Y_iterate, y_hooks, y_utils and best coding practices case study</title><description>&lt;p&gt;I wanted to show you that even in simple cases you can improve your gamemode using y_iterate, also how to improve existing code. I'll be starting from very terrible code state and improve it step by step.&lt;/p&gt;
+<rss xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:content="http://purl.org/rss/1.0/modules/content/" xmlns:atom="http://www.w3.org/2005/Atom" version="2.0"><channel><title>Workbench</title><description>Mostly programming stuff</description><link>http://misiur.github.io/</link><generator>Ghost 0.5</generator><lastBuildDate>Mon, 23 Mar 2015 21:48:13 GMT</lastBuildDate><atom:link href="http://misiur.github.io/rss/" rel="self" type="application/rss+xml"/><ttl>60</ttl><item><title>y_groups - combining with sscanf custom parameter for best results</title><description>&lt;p&gt;Today we are going to study about &lt;a href="http://forum.sa-mp.com/showthread.php?t=194480"&gt;y_groups&lt;/a&gt;. "Ok, so I read that topic, what else there is to know?". I'm going to show you how to use that library in the wild in very commonly occuring situation.&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;Important note: if you are using Zeex's compiler, you have to add &lt;code&gt;-Z+&lt;/code&gt; flag, otherwise you'll see error about a_samp not being included before sscanf. Sublime build configuration should now look like this: &lt;code&gt;"${project_base_name}.pwn", "-;+", "-v2", "-d3", "-Z+", "-\\)+"&lt;/code&gt;&lt;/strong&gt;&lt;/p&gt;
+
+&lt;h5 id="youboremeletsdosomethingalready"&gt;You bore me, let's do something already!&lt;/h5&gt;
+
+&lt;p&gt;Ok. Let's take a look &lt;a href="https://github.com/Misiur/pawn-turorial/blob/8c600358633c2742c031dbcfab4fac0e85d6a4bc/gamemodes/test.pwn"&gt;at our current code&lt;/a&gt;. We have two commands: &lt;code&gt;/hello_admins&lt;/code&gt; and &lt;code&gt;/hello_admin [id]&lt;/code&gt;. We need to check if player we want to greet is logged in, and if he's an admin. &lt;/p&gt;
+
+&lt;p&gt;&lt;em&gt;Note: For tutorial's simplicity sake everyone who connects is logged in and an admin, your gamemode probably has some OnPlayerLogin handler.&lt;/em&gt;&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;YCMD:hello_admin(playerid, params[], help)
+{
+    if (help) {
+        return SendClientMessage(playerid, 0xBADA55, "Says hello to speficied admin");
+    }
+
+    new
+        target = 0
+    ;
+
+    if (sscanf(params, "u", target)) return SendClientMessage(playerid, 0xBADA55, "You dun goof'd");
+    if (target == INVALID_PLAYER_ID || !Logged[target] || !AdminLevel[target]) return SendClientMessage(playerid, 0xBADA55, "You dun goof'd");
+
+    SendClientMessage(target, 0xBADA55, "Hello mr admin!");
+    SendClientMessage(playerid, 0xBADA55, "You said hello to admins!");
+
+    return 1;
+}
+
+YCMD:hello_admins(playerid, params[], help)
+{
+    if (help) {
+        return SendClientMessage(playerid, 0xBADA55, "Says hello to all admins");
+    }
+
+    foreach (new player: Player) {
+        if (!Logged[player] || !AdminLevel[player]) continue; 
+
+        SendClientMessage(player, 0xBADA55, "Hello mr admin!");
+    }
+
+    SendClientMessage(playerid, 0xBADA55, "You said hello to admins!");
+
+    return 1;
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h5 id="whyyouwanttotouchthatiamusingitanditsperfect"&gt;Why you want to touch that, I am using it and it's perfect!&lt;/h5&gt;
+
+&lt;p&gt;We're talking about how YSI can make your life simpler, remember? &lt;br&gt;
+I'll start with showing you &lt;a href="https://github.com/Misiur/pawn-turorial/blob/24fa8213c142b94ef59ccdd7a43699df59f9c9dc/gamemodes/test.pwn"&gt;our final code&lt;/a&gt;, and we'll dig through it step by step.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;CreateGroups()
+{
+    Users = Group_Create("Logged in players");
+
+    for (new i = MAX_ADMIN_LEVEL - 1; i &amp;gt;= 0; --i) {
+        Admins[i] = Group_Create(adminRanks[i]);
+
+        if (i == MAX_ADMIN_LEVEL - 1) continue;
+
+        Group_AddChild(Admins[i + 1], Admins[i]);
+    }
+
+    //Only logged in users can be admins!
+    Group_AddChild(Users, Admins[0]);
+}
+
+ToggleDefaultGroups(playerid, bool:mode = true)
+{
+    Group_SetPlayer(Admins[MAX_ADMIN_LEVEL / 3], playerid, mode);
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;We no longer need &lt;code&gt;Logged&lt;/code&gt; array to keep track of logged in users, and &lt;code&gt;Admins&lt;/code&gt; group replaces our &lt;code&gt;AdminLevel&lt;/code&gt; array. Also as you can see we have cool chain of parent groups&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;`Users` -&amp;gt; `Admins[0]` -&amp;gt; ... `Admins[4]` 
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;If someone leaves parent group, he's no longer in descendant groups. If you wanted to create closed admin conference for selected admins, just create a group which is a child of &lt;code&gt;Admins[X]&lt;/code&gt;, and loop just through those admins. Awesome stuff!&lt;/p&gt;
+
+&lt;p&gt;Restricting commands to specific group is themost common usage, but I won't be covering it, &lt;a href="http://forum.sa-mp.com/showthread.php?t=194480"&gt;as it's already been done&lt;/a&gt;. But we'll push automatisation a little further. &lt;br&gt;
+Very often you have to check if target player is a member of some specific group. Ok, let's do just that&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt; if (sscanf(params, "u", target) || target == INVALID_PLAYER_ID) return SendClientMessage(playerid, 0xBADA55, "You dun goof'd");
+ if (!Group_GetPlayer(Admins[0], target)) return SendClientMessage(playerid, 0xBADA55, "You dun goof'd");
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Neat, we know that target player is logged in and is an admin of rank at least of 1 (inheritance is wonderful!).&lt;/p&gt;
+
+&lt;h5 id="yousaidsomethingaboutsscanf"&gt;You said something about sscanf?&lt;/h5&gt;
+
+&lt;p&gt;Yup. Are you familiar with &lt;a href="https://github.com/Y-Less/sscanf/wiki/" k"-specifier"=""&gt;"kustom" parameters?&lt;/a&gt; What if we could reduce our group checks to minimum? Using that, we &lt;em&gt;k&lt;/em&gt;an! (that sucked, sorry)&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;if (sscanf(params, "k&amp;lt;admin&amp;gt;", target) || target == INVALID_PLAYER_ID) return SendClientMessage(playerid, 0xBADA55, "You dun goof'd");
+
+//(...)
+
+SSCANF:admin(string[])
+{
+    new
+        id = strval(string),
+        bool:isAdmin = IsAdmin(id)
+    ;
+
+    return isAdmin ? id : INVALID_PLAYER_ID;
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Wicked, isn't it?&lt;/p&gt;
+
+&lt;p&gt;Thanks for reading.&lt;/p&gt;</description><link>http://misiur.github.io/2015/03/23/y_groups-making-factions-in-sa-mp-has-never-been-easier/</link><guid isPermaLink="false">6497b4a7-abd9-4925-89cc-5912c6269f89</guid><category>YSI</category><category>y_groups</category><category>sscanf</category><dc:creator>Misiur</dc:creator><pubDate>Mon, 23 Mar 2015 21:46:44 GMT</pubDate></item><item><title>Y_iterate, y_hooks, y_utils and best coding practices case study</title><description>&lt;p&gt;I wanted to show you that even in simple cases you can improve your gamemode using y_iterate, also how to improve existing code. I'll be starting from very terrible code state and improve it step by step.&lt;/p&gt;
 
 &lt;p&gt;&lt;strong&gt;Disclaimer:&lt;/strong&gt; Between commits there are random updated lines - that's my fault as I made some mistakes writing this code (note that latest commit is fully tested). But still, this is not code to be used in real life as &lt;a href="https://github.com/MrMEEE/bumblebee-Old-and-abbandoned/commit/a047be85247755cdbe0acce6f1dafc8beb84f2ac"&gt;this wondeful example of why you can't hide your mistakes using git&lt;/a&gt;. &lt;/p&gt;
 

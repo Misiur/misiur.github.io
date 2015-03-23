@@ -1,0 +1,298 @@
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+
+    <title>y_groups - combining with sscanf custom parameter for best results</title>
+    <meta name="description" content="">
+
+    <meta name="HandheldFriendly" content="True">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link rel="shortcut icon" href="/favicon.ico">
+
+    <link rel="stylesheet" type="text/css" href="/assets/css/screen.css?v=fa1964e67d">
+    <link rel="stylesheet" type="text/css" href="//fonts.googleapis.com/css?family=Merriweather:300,700,700italic,300italic%7COpen+Sans:700,400">
+
+    <link rel="canonical" href="http://misiur.github.io/2015/03/23/y_groups-making-factions-in-sa-mp-has-never-been-easier/">
+    
+    <meta property="og:site_name" content="Workbench">
+    <meta property="og:type" content="article">
+    <meta property="og:title" content="y_groups - combining with sscanf custom parameter for best results">
+    <meta property="og:description" content="Today we are going to study about y_groups. &quot;Ok, so I read that topic, what else there is to know?&quot;. I'm going to show you how to use that library in the wild in very commonly occuring situation. Important...">
+    <meta property="og:url" content="http://misiur.github.io/2015/03/23/y_groups-making-factions-in-sa-mp-has-never-been-easier/">
+    <meta property="article:published_time" content="2015-03-23T21:46:44.208Z">
+    <meta property="article:modified_time" content="2015-03-23T21:46:44.192Z">
+    <meta property="article:tag" content="YSI">
+    <meta property="article:tag" content="y_groups">
+    <meta property="article:tag" content="sscanf">
+    
+    <meta name="twitter:card" content="summary">
+    <meta name="twitter:title" content="y_groups - combining with sscanf custom parameter for best results">
+    <meta name="twitter:description" content="Today we are going to study about y_groups. &quot;Ok, so I read that topic, what else there is to know?&quot;. I'm going to show you how to use that library in the wild in very commonly occuring situation. Important...">
+    <meta name="twitter:url" content="http://misiur.github.io/2015/03/23/y_groups-making-factions-in-sa-mp-has-never-been-easier/">
+    
+    <script type="application/ld+json">
+{
+    "@context": "http://schema.org",
+    "@type": "Article",
+    "publisher": "Workbench",
+    "author": {
+        "@type": "Person",
+        "name": "Misiur",
+        "url": "http://misiur.github.io/author/misiur",
+        "sameAs": null
+    },
+    "headline": "y_groups - combining with sscanf custom parameter for best results",
+    "url": "http://misiur.github.io/2015/03/23/y_groups-making-factions-in-sa-mp-has-never-been-easier/",
+    "datePublished": "2015-03-23T21:46:44.208Z",
+    "dateModified": "2015-03-23T21:46:44.192Z",
+    "keywords": "YSI, y_groups, sscanf",
+    "description": "Today we are going to study about y_groups. &quot;Ok, so I read that topic, what else there is to know?&quot;. I&#x27;m going to show you how to use that library in the wild in very commonly occuring situation. Important..."
+}
+    </script>
+
+    <meta name="generator" content="Ghost 0.5">
+    <link rel="alternate" type="application/rss+xml" title="Workbench" href="http://misiur.github.io/rss/index.rss">
+</head>
+<body class="post-template tag-ysi tag-y_groups tag-sscanf nav-closed">
+
+    <div class="nav">
+    <h3 class="nav-title">Menu</h3>
+    <a href="#" class="nav-close">
+        <span class="hidden">Close</span>
+    </a>
+    <ul>
+            <li class="nav-home" role="presentation"><a href="http://misiur.github.io/">Home</a></li>
+    </ul>
+    <a class="subscribe-button icon-feed" href="/rss/index.rss">Subscribe</a>
+</div>
+<span class="nav-cover"></span>
+
+
+    <div class="site-wrapper">
+
+        
+
+
+<header class="main-header post-head no-cover">
+    <nav class="main-nav  clearfix">
+        
+            <a class="menu-button" href="#"><span class="burger">☰</span><span class="word">Menu</span></a>
+    </nav>
+</header>
+
+<main class="content" role="main">
+    <article class="post tag-ysi tag-y_groups tag-sscanf">
+        <header class="post-header">
+            <h1 class="post-title">y_groups - combining with sscanf custom parameter for best results</h1>
+            <section class="post-meta">
+                <time class="post-date" datetime="2015-03-23">23 March 2015</time>  on <a href="/tag/ysi/">YSI</a>, <a href="/tag/y_groups/">y_groups</a>, <a href="/tag/sscanf/">sscanf</a>
+            </section>
+        </header>
+        
+        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+        <!-- Main ad -->
+        <ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-7854008089817957" data-ad-slot="3303976623" data-ad-format="auto"></ins>
+        <script>
+        (adsbygoogle = window.adsbygoogle || []).push({});
+        </script>
+        
+        <section class="post-content">
+            <p>Today we are going to study about <a href="http://forum.sa-mp.com/showthread.php?t=194480">y_groups</a>. "Ok, so I read that topic, what else there is to know?". I'm going to show you how to use that library in the wild in very commonly occuring situation.</p>
+
+<p><strong>Important note: if you are using Zeex's compiler, you have to add <code>-Z+</code> flag, otherwise you'll see error about a_samp not being included before sscanf. Sublime build configuration should now look like this: <code>"${project_base_name}.pwn", "-;+", "-v2", "-d3", "-Z+", "-\\)+"</code></strong></p>
+
+<h5 id="youboremeletsdosomethingalready">You bore me, let's do something already!</h5>
+
+<p>Ok. Let's take a look <a href="https://github.com/Misiur/pawn-turorial/blob/8c600358633c2742c031dbcfab4fac0e85d6a4bc/gamemodes/test.pwn">at our current code</a>. We have two commands: <code>/hello_admins</code> and <code>/hello_admin [id]</code>. We need to check if player we want to greet is logged in, and if he's an admin. </p>
+
+<p><em>Note: For tutorial's simplicity sake everyone who connects is logged in and an admin, your gamemode probably has some OnPlayerLogin handler.</em></p>
+
+<pre><code>YCMD:hello_admin(playerid, params[], help)
+{
+    if (help) {
+        return SendClientMessage(playerid, 0xBADA55, "Says hello to speficied admin");
+    }
+
+    new
+        target = 0
+    ;
+
+    if (sscanf(params, "u", target)) return SendClientMessage(playerid, 0xBADA55, "You dun goof'd");
+    if (target == INVALID_PLAYER_ID || !Logged[target] || !AdminLevel[target]) return SendClientMessage(playerid, 0xBADA55, "You dun goof'd");
+
+    SendClientMessage(target, 0xBADA55, "Hello mr admin!");
+    SendClientMessage(playerid, 0xBADA55, "You said hello to admins!");
+
+    return 1;
+}
+
+YCMD:hello_admins(playerid, params[], help)
+{
+    if (help) {
+        return SendClientMessage(playerid, 0xBADA55, "Says hello to all admins");
+    }
+
+    foreach (new player: Player) {
+        if (!Logged[player] || !AdminLevel[player]) continue; 
+
+        SendClientMessage(player, 0xBADA55, "Hello mr admin!");
+    }
+
+    SendClientMessage(playerid, 0xBADA55, "You said hello to admins!");
+
+    return 1;
+}
+</code></pre>
+
+<h5 id="whyyouwanttotouchthatiamusingitanditsperfect">Why you want to touch that, I am using it and it's perfect!</h5>
+
+<p>We're talking about how YSI can make your life simpler, remember? <br>
+I'll start with showing you <a href="https://github.com/Misiur/pawn-turorial/blob/24fa8213c142b94ef59ccdd7a43699df59f9c9dc/gamemodes/test.pwn">our final code</a>, and we'll dig through it step by step.</p>
+
+<pre><code>CreateGroups()
+{
+    Users = Group_Create("Logged in players");
+
+    for (new i = MAX_ADMIN_LEVEL - 1; i &gt;= 0; --i) {
+        Admins[i] = Group_Create(adminRanks[i]);
+
+        if (i == MAX_ADMIN_LEVEL - 1) continue;
+
+        Group_AddChild(Admins[i + 1], Admins[i]);
+    }
+
+    //Only logged in users can be admins!
+    Group_AddChild(Users, Admins[0]);
+}
+
+ToggleDefaultGroups(playerid, bool:mode = true)
+{
+    Group_SetPlayer(Admins[MAX_ADMIN_LEVEL / 3], playerid, mode);
+}
+</code></pre>
+
+<p>We no longer need <code>Logged</code> array to keep track of logged in users, and <code>Admins</code> group replaces our <code>AdminLevel</code> array. Also as you can see we have cool chain of parent groups</p>
+
+<pre><code>`Users` -&gt; `Admins[0]` -&gt; ... `Admins[4]` 
+</code></pre>
+
+<p>If someone leaves parent group, he's no longer in descendant groups. If you wanted to create closed admin conference for selected admins, just create a group which is a child of <code>Admins[X]</code>, and loop just through those admins. Awesome stuff!</p>
+
+<p>Restricting commands to specific group is themost common usage, but I won't be covering it, <a href="http://forum.sa-mp.com/showthread.php?t=194480">as it's already been done</a>. But we'll push automatisation a little further. <br>
+Very often you have to check if target player is a member of some specific group. Ok, let's do just that</p>
+
+<pre><code> if (sscanf(params, "u", target) || target == INVALID_PLAYER_ID) return SendClientMessage(playerid, 0xBADA55, "You dun goof'd");
+ if (!Group_GetPlayer(Admins[0], target)) return SendClientMessage(playerid, 0xBADA55, "You dun goof'd");
+</code></pre>
+
+<p>Neat, we know that target player is logged in and is an admin of rank at least of 1 (inheritance is wonderful!).</p>
+
+<h5 id="yousaidsomethingaboutsscanf">You said something about sscanf?</h5>
+
+<p>Yup. Are you familiar with <a href="https://github.com/Y-Less/sscanf/wiki/" k>"kustom" parameters?</a> What if we could reduce our group checks to minimum? Using that, we <em>k</em>an! (that sucked, sorry)</p>
+
+<pre><code>if (sscanf(params, "k&lt;admin&gt;", target) || target == INVALID_PLAYER_ID) return SendClientMessage(playerid, 0xBADA55, "You dun goof'd");
+
+//(...)
+
+SSCANF:admin(string[])
+{
+    new
+        id = strval(string),
+        bool:isAdmin = IsAdmin(id)
+    ;
+
+    return isAdmin ? id : INVALID_PLAYER_ID;
+}
+</code></pre>
+
+<p>Wicked, isn't it?</p>
+
+<p>Thanks for reading.</p>
+        </section>
+
+        <footer class="post-footer">
+
+
+
+            <section class="author">
+                <h4><a href="/author/misiur/">Misiur</a></h4>
+
+                    <p>Read <a href="/author/misiur/">more posts</a> by this author.</p>
+                <div class="author-meta">
+                    
+                    
+                </div>
+            </section>
+
+
+            <section class="share">
+                <h4>Share this post</h4>
+                <a class="icon-twitter" href="https://twitter.com/share?text=y_groups%20-%20combining%20with%20sscanf%20custom%20parameter%20for%20best%20results&amp;url=http://misiur.github.io/2015/03/23/y_groups-making-factions-in-sa-mp-has-never-been-easier/" onclick="window.open(this.href, 'twitter-share', 'width=550,height=235');return false;">
+                    <span class="hidden">Twitter</span>
+                </a>
+                <a class="icon-facebook" href="https://www.facebook.com/sharer/sharer.php?u=http://misiur.github.io/2015/03/23/y_groups-making-factions-in-sa-mp-has-never-been-easier/" onclick="window.open(this.href, 'facebook-share','width=580,height=296');return false;">
+                    <span class="hidden">Facebook</span>
+                </a>
+                <a class="icon-google-plus" href="https://plus.google.com/share?url=http://misiur.github.io/2015/03/23/y_groups-making-factions-in-sa-mp-has-never-been-easier/" onclick="window.open(this.href, 'google-plus-share', 'width=490,height=530');return false;">
+                    <span class="hidden">Google+</span>
+                </a>
+            </section>
+
+        </footer>
+        
+        <div id="disqus_thread"></div>
+        <script type="text/javascript">
+            /* * * CONFIGURATION VARIABLES * * */
+            var disqus_shortname = 'misiurworkbench';
+            var disqus_identifier = 'ghost-8';
+            
+            /* * * DON'T EDIT BELOW THIS LINE * * */
+            (function() {
+                var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+                dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+                (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+            })();
+        </script>
+        <noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript" rel="nofollow">comments powered by Disqus.</a></noscript>
+    </article>
+</main>
+
+
+
+        <footer class="site-footer clearfix">
+            <section class="copyright"><a href="http://misiur.github.io">Workbench</a> © 2015</section>
+            <section class="poweredby">Proudly published with <a href="https://ghost.org">Ghost</a></section>
+        </footer>
+
+    </div>
+
+    <script src="/public/jquery.js?v=fa1964e67d"></script> <script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-12341674-2', 'auto');
+  ga('send', 'pageview');
+
+</script>
+
+    <script type="text/javascript" src="/assets/js/jquery.fitvids.js?v=fa1964e67d"></script>
+    <script type="text/javascript" src="/assets/js/index.js?v=fa1964e67d"></script>
+
+    <script type="text/javascript">
+        /* * * CONFIGURATION VARIABLES * * */
+        var disqus_shortname = 'misiurworkbench';
+        
+        /* * * DON'T EDIT BELOW THIS LINE * * */
+        (function () {
+            var s = document.createElement('script'); s.async = true;
+            s.type = 'text/javascript';
+            s.src = '//' + disqus_shortname + '.disqus.com/count.js';
+            (document.getElementsByTagName('HEAD')[0] || document.getElementsByTagName('BODY')[0]).appendChild(s);
+        }());
+    </script>
+</body>
