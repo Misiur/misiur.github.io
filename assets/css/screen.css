@@ -419,7 +419,7 @@ table.plain tbody > tr:nth-child(odd) > th {
    background: transparent;
 }
 
-iframe.adsbygoogle {
+.adsbygoogle iframe {
     margin: 0;
 }
 
